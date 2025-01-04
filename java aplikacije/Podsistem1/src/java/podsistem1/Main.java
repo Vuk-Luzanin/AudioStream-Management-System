@@ -1,7 +1,9 @@
 
 package podsistem1;
 
+import entities.Korisnik;
 import entities.Mesto;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -18,7 +20,6 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import komunikacija.Reply;
 import komunikacija.Request;
-
 
 
 public class Main {
@@ -57,11 +58,29 @@ public class Main {
     {
         List<Mesto> gradovi = em.createNamedQuery("Mesto.findByNaziv").setParameter("naziv", naziv).getResultList();
         if(!gradovi.isEmpty())
-            return new Reply(-1, "VEC POSTOJI GRAD SA ZADATIM NAZIVOM", null);
+            return new Reply(-1, "VEC POSTOJI GRAD SA ZADATIM NAZIVOM!", null);
         
         Mesto g = new Mesto(0, naziv);
         persistObject(g);
         return new Reply(0, "USPESNO KREIRAN GRAD", null);
+    }
+    
+    //zahtev 2
+    private static Reply kreirajKorisnika(String imeKorisnika, String email, int godiste, String pol, String nazivMesta)
+    {
+        List<Mesto> mesta = em.createNamedQuery("Mesto.findByNaziv").setParameter("naziv", nazivMesta).getResultList();
+        if(mesta.isEmpty())
+            return new Reply(-1, "NE POSTOJI GRAD SA ZADATIM NAZIVOM!", null);
+        Mesto m = mesta.get(0);
+        
+        List<Korisnik> korisnici = em.createNamedQuery("Korisnik.findByIme").setParameter("ime", imeKorisnika).getResultList();
+        if(!korisnici.isEmpty())
+            return new Reply(-1, "VEC POSTOJI KORISNIK SA ZADATIM IMENOM!", null);
+        
+        Korisnik korisnik = new Korisnik();
+        korisnik.setIme(imeKorisnika); korisnik.setEmail(email); korisnik.setGodiste(godiste); korisnik.setPol(pol.charAt(0)); korisnik.setIdMesto(m);
+        persistObject(korisnik);
+        return new Reply(0, "USPESNO KREIRAN KORISNIK!", null);  
     }
 
     
@@ -85,12 +104,27 @@ public class Main {
                 ObjectMessage objMsg = (ObjectMessage) consumer.receive();      // blocking call
                 Request request = (Request) objMsg.getObject();
                 System.out.println("Podsistem1 primio zahtev...");
+                Reply reply;
                 
                 switch (request.getIdZahteva()) {
                     case KREIRAJ_GRAD:
                         System.out.println("Zahtev od servera za kreiranje grada...");
                         String nazivGrada = (String)request.getParametri().get(0);
-                        Reply reply = kreirajGrad(nazivGrada);
+                        reply = kreirajGrad(nazivGrada);
+                        objMsgSend.setObject(reply);
+                        System.out.println("Obradjen zahtev...");
+                        break;
+                        
+                    case KREIRAJ_KORISNIKA:
+                        System.out.println("Zahtev od servera za kreiranje korisnika...");
+                        ArrayList<Object> params = request.getParametri();
+                        String imeKorisnika = (String) params.get(0);
+                        String email        = (String) params.get(1);
+                        int godiste         = (int) params.get(2);
+                        String pol          = (String) params.get(3);
+                        String nazivMesta   = (String) params.get(4);
+                        
+                        reply = kreirajKorisnika(imeKorisnika, email, godiste, pol, nazivMesta);
                         objMsgSend.setObject(reply);
                         System.out.println("Obradjen zahtev...");
                         break;
@@ -106,7 +140,6 @@ public class Main {
             }
             
         }
-        
         
     }
     

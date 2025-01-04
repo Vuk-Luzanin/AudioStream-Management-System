@@ -1,9 +1,7 @@
 
-
 package klijent;
 
 import java.util.Scanner;
-
 
 public class Klijent {
 

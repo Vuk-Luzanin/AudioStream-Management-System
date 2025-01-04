@@ -95,4 +95,19 @@ public class Podsistem1Resource {
         request.dodajParametar(nazivGrada);
         return sendRequest(request);
     }
+    
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)       // jer radi sa JMS koji nema transakcije
+    @POST
+    @Path("/zahtev2")
+    public Response kreirajKorisnik(@QueryParam("imeKorisnika") String imeKorisnika, @QueryParam("email") String email,
+            @QueryParam("godiste") int godiste, @QueryParam("pol") String pol, @QueryParam("mesto") String mesto) {
+        Request request = new Request();
+        request.setIdZahteva(KREIRAJ_KORISNIKA);
+        request.dodajParametar(imeKorisnika);
+        request.dodajParametar(email);
+        request.dodajParametar(godiste);
+        request.dodajParametar(pol);
+        request.dodajParametar(mesto);
+        return sendRequest(request);
+    }
 }

@@ -90,7 +90,17 @@ public class Podsistem1Handler {
     }
     
     public static void zahtev2Handler() {
-
+        URL = URL_START;
+        URL = URL + "/zahtev2";
+        URL = URL + "?";
+        count = 0;
+        
+        unesiParametar("ime korisnika", "imeKorisnika");
+        unesiParametar("email korisnika", "email");
+        unesiParametar("godiste korisnika - godina", "godiste");
+        unesiParametar("pol korisnika - (M / Z)", "pol");
+        unesiParametar("naziv mesta korisnika", "mesto");
+        sendHttpRequest(URL, "POST");
     }
     
     public static void zahtev3Handler() {
