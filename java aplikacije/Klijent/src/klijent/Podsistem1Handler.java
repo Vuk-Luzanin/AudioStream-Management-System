@@ -131,14 +131,14 @@ public class Podsistem1Handler {
         sendHttpRequest(URL, "GET");
     }
     
-//    public static void zahtev19Handler() {
-//        URL = URL_START;
-//        URL = URL + "/zahtev19";
-////        URL = URL + "?";
-//        count = 0;
-//        
-//        sendHttpRequest(URL, "GET");
-//    }
+    public static void zahtev19Handler() {
+        URL = URL_START;
+        URL = URL + "/zahtev19";
+//        URL = URL + "?";
+        count = 0;
+        
+        sendHttpRequest(URL, "GET");
+    }
 
     
     

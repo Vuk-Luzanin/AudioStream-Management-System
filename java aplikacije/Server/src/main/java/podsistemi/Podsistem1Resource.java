@@ -145,5 +145,14 @@ public class Podsistem1Resource {
         return sendRequest(request);
     }
     
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)       // jer radi sa JMS koji nema transakcije
+    @GET
+    @Path("/zahtev19")
+    public Response getSviKorisnici() {
+        Request request = new Request();
+        request.setIdZahteva(DOHVATI_KORISNIKE);
+        return sendRequest(request);
+    }
+    
     
 }

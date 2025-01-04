@@ -128,6 +128,15 @@ public class Main {
             m.setKorisnikList(null);
         return mesta;
     }
+    
+    //zahtev 19
+    private static List<Korisnik> getSviKorisnici()
+    {
+        List<Korisnik> korisnici =  em.createNamedQuery("Korisnik.findAll").getResultList();
+        for(Korisnik k : korisnici)
+            k.getIdMesto().setKorisnikList(null);
+        return korisnici;
+    }
 
     
     public static void main(String[] args) {
@@ -199,6 +208,14 @@ public class Main {
                         System.out.println("Zahtev od servera za dohvatanje svih mesta...");
                         List<Mesto> mesta = getSvaMesta();
                         reply = new Reply(0, "DOHVACENA SVA MESTA", mesta);
+                        objMsgSend.setObject(reply);
+                        System.out.println("Obradjen zahtev...");
+                        break;
+                        
+                    case DOHVATI_KORISNIKE:
+                        System.out.println("Zahtev od servera za dohvatanje svih korisnika...");
+                        List<Korisnik> korisnici = getSviKorisnici();
+                        reply = new Reply(0, "DOHVACENI SVI KORISNICI", korisnici);
                         objMsgSend.setObject(reply);
                         System.out.println("Obradjen zahtev...");
                         break;
