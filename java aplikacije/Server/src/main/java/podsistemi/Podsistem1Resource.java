@@ -110,4 +110,15 @@ public class Podsistem1Resource {
         request.dodajParametar(mesto);
         return sendRequest(request);
     }
+    
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)       // jer radi sa JMS koji nema transakcije
+    @POST
+    @Path("/zahtev3")
+    public Response updateEmail(@QueryParam("imeKorisnika") String imeKorisnika, @QueryParam("email") String email) {
+        Request request = new Request();
+        request.setIdZahteva(PROMENA_EMAIL_ADRESE);
+        request.dodajParametar(imeKorisnika);
+        request.dodajParametar(email);
+        return sendRequest(request);
+    }
 }

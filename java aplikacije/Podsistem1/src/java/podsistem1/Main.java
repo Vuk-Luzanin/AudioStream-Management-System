@@ -80,7 +80,22 @@ public class Main {
         Korisnik korisnik = new Korisnik();
         korisnik.setIme(imeKorisnika); korisnik.setEmail(email); korisnik.setGodiste(godiste); korisnik.setPol(pol.charAt(0)); korisnik.setIdMesto(m);
         persistObject(korisnik);
-        return new Reply(0, "USPESNO KREIRAN KORISNIK!", null);  
+        return new Reply(0, "USPESNO KREIRAN KORISNIK: " + imeKorisnika, null);  
+    }
+    
+    //zahtev 3
+    private static Reply updateEmail(String imeKorisnika, String email)
+    {
+        List<Korisnik> korisnici = em.createNamedQuery("Korisnik.findByIme").setParameter("ime", imeKorisnika).getResultList();
+        if(korisnici.isEmpty())
+            return new Reply(-1, "NE POSTOJI KORISNIK " + imeKorisnika, null);
+        Korisnik korisnik = korisnici.get(0);
+
+        em.getTransaction().begin();
+        korisnik.setEmail(email);
+        em.flush();
+        em.getTransaction().commit();
+        return new Reply(0, "USPESNO POSTAVLJENA EMAIL ADRESA KORISNIKU: " + imeKorisnika, null);  
     }
 
     
@@ -125,6 +140,16 @@ public class Main {
                         String nazivMesta   = (String) params.get(4);
                         
                         reply = kreirajKorisnika(imeKorisnika, email, godiste, pol, nazivMesta);
+                        objMsgSend.setObject(reply);
+                        System.out.println("Obradjen zahtev...");
+                        break;
+                        
+                    case PROMENA_EMAIL_ADRESE:
+                        System.out.println("Zahtev od servera za promenu email adrese korisnika...");
+                        params = request.getParametri();
+                        imeKorisnika    = (String) params.get(0);
+                        email           = (String) params.get(1);
+                        reply = updateEmail(imeKorisnika, email);
                         objMsgSend.setObject(reply);
                         System.out.println("Obradjen zahtev...");
                         break;

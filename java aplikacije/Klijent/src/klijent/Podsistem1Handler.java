@@ -104,7 +104,14 @@ public class Podsistem1Handler {
     }
     
     public static void zahtev3Handler() {
-
+        URL = URL_START;
+        URL = URL + "/zahtev3";
+        URL = URL + "?";
+        count = 0;
+        
+        unesiParametar("ime korisnika", "imeKorisnika");
+        unesiParametar("novu email adresu", "email");
+        sendHttpRequest(URL, "POST");
     }
     
     public static void zahtev4Handler() {
