@@ -55,7 +55,7 @@ public class Main {
         em.getTransaction().commit();
     }
     
-     //zahtev 1
+    //zahtev 1
     private static Reply kreirajGrad(String naziv)
     {
         List<Mesto> gradovi = em.createNamedQuery("Mesto.findByNaziv").setParameter("naziv", naziv).getResultList();

@@ -85,9 +85,9 @@ public class Klijent {
                 case PROMENA_MESTA:
                     Podsistem1Handler.zahtev4Handler();
                     break;
-//                case KREIRAJ_KATEGORIJU:
-//                    Podsistem2Handler.zahtev5Handler();
-//                    break;
+                case KREIRAJ_KATEGORIJU:
+                    Podsistem2Handler.zahtev5Handler();
+                    break;
 //                case KREIRAJ_AUDIO_SNIMAK:
 //                    Podsistem2Handler.zahtev6Handler();
 //                    break;

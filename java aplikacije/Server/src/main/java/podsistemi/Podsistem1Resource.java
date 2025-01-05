@@ -44,6 +44,7 @@ public class Podsistem1Resource {
     
     private static final int PODSISTEM_ID = 1;
     
+    
     private Response sendRequest(Request request) {
         try {
             if(context == null || consumer == null || producer == null){
