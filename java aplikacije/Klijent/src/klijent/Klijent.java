@@ -88,9 +88,9 @@ public class Klijent {
                 case KREIRAJ_KATEGORIJU:
                     Podsistem2Handler.zahtev5Handler();
                     break;
-//                case KREIRAJ_AUDIO_SNIMAK:
-//                    Podsistem2Handler.zahtev6Handler();
-//                    break;
+                case KREIRAJ_AUDIO_SNIMAK:
+                    Podsistem2Handler.zahtev6Handler();
+                    break;
 //                case PROMENA_NAZIVA_SNIMKA:
 //                    Podsistem2Handler.zahtev7Handler();
 //                    break;

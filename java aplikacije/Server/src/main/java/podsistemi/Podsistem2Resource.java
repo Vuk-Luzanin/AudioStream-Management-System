@@ -100,4 +100,18 @@ public class Podsistem2Resource {
         request.dodajParametar(nazivKategorije);
         return sendRequest(request);
     }
+    
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)       // jer radi sa JMS koji nema transakcije
+    @POST
+    @Path("/zahtev6")
+    public Response kreirajAudio(@QueryParam("naziv") String naziv, @QueryParam("trajanje") String trajanje,
+            @QueryParam("imeKorisnika") String imeKorisnika, @QueryParam("datum") String datum) {
+        Request request = new Request();
+        request.setIdZahteva(KREIRAJ_AUDIO_SNIMAK);
+        request.dodajParametar(naziv);
+        request.dodajParametar(trajanje);
+        request.dodajParametar(imeKorisnika);
+        request.dodajParametar(datum);
+        return sendRequest(request);
+    }
 }

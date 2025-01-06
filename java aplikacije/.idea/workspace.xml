@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="181b23b5-6886-42b2-b931-7f97ebf6eca1" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/Klijent/build/classes/klijent/Klijent.class" beforeDir="false" afterPath="$PROJECT_DIR$/Klijent/build/classes/klijent/Klijent.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Klijent/build/classes/klijent/Podsistem2Handler.class" beforeDir="false" afterPath="$PROJECT_DIR$/Klijent/build/classes/klijent/Podsistem2Handler.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Klijent/nbproject/private/private.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Klijent/nbproject/private/private.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Klijent/src/klijent/Klijent.java" beforeDir="false" afterPath="$PROJECT_DIR$/Klijent/src/klijent/Klijent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Klijent/src/klijent/Podsistem2Handler.java" beforeDir="false" afterPath="$PROJECT_DIR$/Klijent/src/klijent/Podsistem2Handler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Podsistem2/src/conf/persistence.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Podsistem2/src/conf/persistence.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Podsistem2/src/java/podsistem2/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/Podsistem2/src/java/podsistem2/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/src/main/java/podsistemi/Podsistem2Resource.java" beforeDir="false" afterPath="$PROJECT_DIR$/Server/src/main/java/podsistemi/Podsistem2Resource.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/target/Server-1.0-SNAPSHOT.war" beforeDir="false" afterPath="$PROJECT_DIR$/Server/target/Server-1.0-SNAPSHOT.war" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/target/Server-1.0-SNAPSHOT/WEB-INF/classes/podsistemi/Podsistem2Resource.class" beforeDir="false" afterPath="$PROJECT_DIR$/Server/target/Server-1.0-SNAPSHOT/WEB-INF/classes/podsistemi/Podsistem2Resource.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/target/classes/podsistemi/Podsistem2Resource.class" beforeDir="false" afterPath="$PROJECT_DIR$/Server/target/classes/podsistemi/Podsistem2Resource.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/target/generated-sources/annotations/entities/Audio_.java" beforeDir="false" afterPath="$PROJECT_DIR$/Server/target/generated-sources/annotations/entities/Audio_.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/target/generated-sources/annotations/entities/Kategorija_.java" beforeDir="false" afterPath="$PROJECT_DIR$/Server/target/generated-sources/annotations/entities/Kategorija_.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/target/generated-sources/annotations/entities/Korisnik_.java" beforeDir="false" afterPath="$PROJECT_DIR$/Server/target/generated-sources/annotations/entities/Korisnik_.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/target/generated-sources/annotations/entities/Mesto_.java" beforeDir="false" afterPath="$PROJECT_DIR$/Server/target/generated-sources/annotations/entities/Mesto_.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/target/maven-archiver/pom.properties" beforeDir="false" afterPath="$PROJECT_DIR$/Server/target/maven-archiver/pom.properties" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 7
+}]]></component>
+  <component name="ProjectId" id="2rEXmZjj4tDpgLJVji7ZAK9XCtS" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "main",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "/Users/vukluzanin/Downloads/AudioStream-Management-System/java aplikacije",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="181b23b5-6886-42b2-b931-7f97ebf6eca1" name="Changes" comment="" />
+      <created>1736125367808</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1736125367808</updated>
+      <workItem from="1736125369172" duration="1406000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>

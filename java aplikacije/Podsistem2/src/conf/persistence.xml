@@ -4,6 +4,7 @@
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
     <class>entities.Audio</class>
     <class>entities.Kategorija</class>
+    <exclude-unlisted-classes>true</exclude-unlisted-classes>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/podsistem2?zeroDateTimeBehavior=CONVERT_TO_NULL"/>
       <property name="javax.persistence.jdbc.user" value="root"/>
@@ -11,6 +12,22 @@
       <property name="javax.persistence.jdbc.password" value="123"/>
       <property name="eclipselink.jdbc.property.useSSL" value="false"/>
       <property name="eclipselink.jdbc.property.requireSSL" value="false"/>
+    </properties>
+  </persistence-unit>
+  <persistence-unit name="Podsistem1PU" transaction-type="RESOURCE_LOCAL">
+    <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+    <class>podsistem1Entities.Korisnik</class>
+    <class>podsistem1Entities.Mesto</class>
+    <exclude-unlisted-classes>true</exclude-unlisted-classes>
+    <properties>
+      <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/podsistem1?zeroDateTimeBehavior=CONVERT_TO_NULL"/>
+      <property name="javax.persistence.jdbc.user" value="root"/>
+      <property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
+      <property name="javax.persistence.jdbc.password" value="123"/>
+      <property name="eclipselink.jdbc.property.useSSL" value="false"/>
+      <property name="eclipselink.jdbc.property.requireSSL" value="false"/>
+      
+
     </properties>
   </persistence-unit>
 </persistence>

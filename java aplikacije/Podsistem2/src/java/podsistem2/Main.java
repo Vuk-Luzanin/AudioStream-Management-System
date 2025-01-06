@@ -1,8 +1,15 @@
 
 package podsistem2;
 
+import entities.Audio;
 import entities.Kategorija;
+import java.io.UnsupportedEncodingException;
+import java.math.BigDecimal;
+import java.net.URLDecoder;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -19,6 +26,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import komunikacija.Reply;
 import komunikacija.Request;
+import podsistem1Entities.Korisnik;
 
 
 public class Main {
@@ -37,6 +45,10 @@ public class Main {
     //jpa
     private static EntityManagerFactory emf = Persistence.createEntityManagerFactory("Podsistem2PU");
     private static EntityManager em = emf.createEntityManager();
+    
+    private static EntityManagerFactory emfpodsistem1 = Persistence.createEntityManagerFactory("Podsistem1PU");
+    private static EntityManager empodsistem1 = emfpodsistem1.createEntityManager();
+    
     
     private static final int KREIRAJ_KATEGORIJU = 5;
     private static final int KREIRAJ_AUDIO_SNIMAK = 6;
@@ -78,6 +90,47 @@ public class Main {
         return new Reply(0, "USPESNO KREIRANA KATEGORIJA: " + nazivKategorije, null);
     }
     
+    //zahtev 6
+    private static Reply kreirajAudio(String naziv, BigDecimal trajanje, String imeKorisnika, String datum)
+    {
+        List<Korisnik> korisnici = empodsistem1.createNamedQuery("Korisnik.findByIme").setParameter("ime", imeKorisnika).getResultList();
+        if(korisnici.isEmpty())
+            return new Reply(-1, "NE POSTOJI KORISNIK: " + imeKorisnika, null);
+        Korisnik korisnik = korisnici.get(0);
+        
+        BigDecimal zero = new BigDecimal("0");
+        if (trajanje.compareTo(zero) < 0) 
+        {
+            return new Reply(-1, "TRAJANJE NE MOZE BITI NEGATIVNO", null);
+        }
+        
+        // Dekodiraj datum
+        String decodedDatum = null;
+        try {
+            decodedDatum = URLDecoder.decode(datum, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date datumPostavljanja = null;
+        try 
+        {
+            datumPostavljanja = dateFormat.parse(decodedDatum);
+        } catch (ParseException e) 
+        {
+            System.out.println("DATUM NIJE U ISPRAVNOM FORMATU: " + datum);
+        }
+        
+        Audio a = new Audio();
+        a.setNaziv(naziv);
+        a.setTrajanje(trajanje);
+        a.setIdKorisnik(korisnik.getIdKorisnik());
+        a.setDatumPostavljanja(datumPostavljanja);
+        persistObject(a);
+        return new Reply(0, "USPESNO KREIRAN AUDIO SNIMAK: " + naziv, null);
+    }
+    
 
     public static void main(String[] args) {
         System.out.println("Podsistem2 pokrenut...");
@@ -110,6 +163,16 @@ public class Main {
                         System.out.println("Obradjen zahtev...");
                         break;
                         
+                    case KREIRAJ_AUDIO_SNIMAK:
+                        System.out.println("Zahtev od servera za kreiranje audio snimka...");
+                        String naziv = (String) request.getParametri().get(0);
+                        BigDecimal trajanje = new BigDecimal((String) request.getParametri().get(1));
+                        String imeKorisnika = (String) request.getParametri().get(2);
+                        String datum = (String) request.getParametri().get(3);
+                        reply = kreirajAudio(naziv, trajanje, imeKorisnika, datum);
+                        objMsgSend.setObject(reply);
+                        System.out.println("Obradjen zahtev...");
+                        break;
                     
                 }
                 
