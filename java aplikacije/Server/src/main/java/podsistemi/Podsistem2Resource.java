@@ -146,4 +146,15 @@ public class Podsistem2Resource {
         request.setIdZahteva(DOHVATI_SNIMKE);
         return sendRequest(request);
     }
+    
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)       // jer radi sa JMS koji nema transakcije
+    @GET
+    @Path("/zahtev22")
+    public Response dohvatiKategorijeZaSnimak(@QueryParam("naziv") String naziv, @QueryParam("imeKorisnika") String imeKorisnika) {
+        Request request = new Request();
+        request.dodajParametar(naziv);
+        request.dodajParametar(imeKorisnika);
+        request.setIdZahteva(DOHVATI_KATEGORIJE_SNIMKA);
+        return sendRequest(request);
+    }
 }

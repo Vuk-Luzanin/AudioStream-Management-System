@@ -156,12 +156,23 @@ public class Podsistem2Handler {
         sendHttpRequest(URL, "GET");
     }
     
-        public static void zahtev21Handler() {
+    public static void zahtev21Handler() {
         URL = URL_START;
         URL = URL + "/zahtev21";
 //        URL = URL + "?";
         count = 0;
         
+        sendHttpRequest(URL, "GET");
+    }
+    
+    public static void zahtev22Handler() {
+        URL = URL_START;
+        URL = URL + "/zahtev22";
+        URL = URL + "?";
+        count = 0;
+        
+        unesiParametar("naziv audio snimka", "naziv");
+        unesiParametar("naziv korisnika koji je vlasnik audio snimka", "imeKorisnika");
         sendHttpRequest(URL, "GET");
     }
 }

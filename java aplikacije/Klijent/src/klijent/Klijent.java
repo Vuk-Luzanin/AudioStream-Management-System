@@ -136,9 +136,9 @@ public class Klijent {
                 case DOHVATI_SNIMKE:
                     Podsistem2Handler.zahtev21Handler();
                     break;
-//                case DOHVATI_KATEGORIJE_SNIMKA:
-//                    Podsistem3Handler.zahtev22Handler();
-//                    break;
+                case DOHVATI_KATEGORIJE_SNIMKA:
+                    Podsistem2Handler.zahtev22Handler();
+                    break;
 //                case DOHVATI_PAKETE:
 //                    Podsistem3Handler.zahtev23Handler();
 //                    break;

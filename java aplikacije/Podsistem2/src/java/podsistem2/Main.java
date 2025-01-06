@@ -42,9 +42,11 @@ public class Main {
     private static JMSProducer producer = null;
     
     //jpa
+    // for podsistem2 database
     private static EntityManagerFactory emf = Persistence.createEntityManagerFactory("Podsistem2PU");
     private static EntityManager em = emf.createEntityManager();
     
+    // for podsistem1 database
     private static EntityManagerFactory emfpodsistem1 = Persistence.createEntityManagerFactory("Podsistem1PU");
     private static EntityManager empodsistem1 = emfpodsistem1.createEntityManager();
     
@@ -139,14 +141,13 @@ public class Main {
     //zahtev 7
     private static Reply promeniNaziv(String naziv, String imeKorisnika, String noviNaziv)
     {
-        // da li korisnik ima snimak sa datim imenom
         List<Korisnik> korisnici = empodsistem1.createNamedQuery("Korisnik.findByIme").setParameter("ime", imeKorisnika).getResultList();
         if(korisnici.isEmpty())
             return new Reply(-1, "NE POSTOJI KORISNIK: " + imeKorisnika, null);
         Korisnik korisnik = korisnici.get(0);
         int idKorisnik = korisnik.getIdKorisnik();
         
-        // da li dati korisnik vec ima audio snimak sa tim imenom
+        // da li dati korisnik ima audio snimak sa tim imenom
         List<Audio> snimci = em.createNamedQuery("Audio.findByIDKorNaziv").setParameter("idKorisnik", idKorisnik).setParameter("naziv", naziv).getResultList();
         if (snimci.isEmpty()) 
             return new Reply(-1, "KORISNIK NEMA AUDIO SNIMAK SA NAZIVOM: " + naziv, null);
@@ -177,7 +178,31 @@ public class Main {
         return snimci;
     }
     
-
+    //zahtev 22
+    private static Reply dohvatiKategorijeZaSnimak(String naziv, String imeKorisnika)
+    {
+        List<Korisnik> korisnici = empodsistem1.createNamedQuery("Korisnik.findByIme").setParameter("ime", imeKorisnika).getResultList();
+        if(korisnici.isEmpty())
+            return new Reply(-1, "NE POSTOJI KORISNIK: " + imeKorisnika, null);
+        Korisnik korisnik = korisnici.get(0);
+        int idKorisnik = korisnik.getIdKorisnik();
+        
+        // da li dati korisnik ima audio snimak sa tim imenom
+        List<Audio> snimci = em.createNamedQuery("Audio.findByIDKorNaziv").setParameter("idKorisnik", idKorisnik).setParameter("naziv", naziv).getResultList();
+        if (snimci.isEmpty()) 
+            return new Reply(-1, "KORISNIK NEMA AUDIO SNIMAK SA NAZIVOM: " + naziv, null);
+        Audio a = snimci.get(0);
+        
+        List<Kategorija> kategorije = em.createQuery(
+        "SELECT k FROM Kategorija k JOIN k.audioList a WHERE a.idAudio = :idAudio", Kategorija.class).setParameter("idAudio", a.getIdAudio()).getResultList();
+        if (kategorije.isEmpty()) 
+            return new Reply(-1, "NE POSTOJE KATEGORIJE ZA AUDIO SNIMAK: " + naziv, null);
+        for(Kategorija k : kategorije)
+            k.setAudioList(null);
+        return new Reply(-1, "DOHVACENE SVE KATEGORIJE ZA AUDIO SNIMAK: " + naziv, kategorije);
+    }
+    
+    
     public static void main(String[] args) {
         System.out.println("Podsistem2 pokrenut...");
         
@@ -246,6 +271,14 @@ public class Main {
                         System.out.println("Obradjen zahtev...");
                         break;
                     
+                    case DOHVATI_KATEGORIJE_SNIMKA:
+                        System.out.println("Zahtev od servera za dohvatanje svih kategorija za odredjeni audio snimak...");
+                        naziv = (String) request.getParametri().get(0);
+                        imeKorisnika = (String) request.getParametri().get(1);
+                        reply = dohvatiKategorijeZaSnimak(naziv, imeKorisnika);
+                        objMsgSend.setObject(reply);
+                        System.out.println("Obradjen zahtev...");
+                        break;
                 }
                 
                 objMsgSend.setIntProperty("id", ID_SEND);       // salje odgovor serveru
