@@ -91,9 +91,9 @@ public class Klijent {
                 case KREIRAJ_AUDIO_SNIMAK:
                     Podsistem2Handler.zahtev6Handler();
                     break;
-//                case PROMENA_NAZIVA_SNIMKA:
-//                    Podsistem2Handler.zahtev7Handler();
-//                    break;
+                case PROMENA_NAZIVA_SNIMKA:
+                    Podsistem2Handler.zahtev7Handler();
+                    break;
 //                case DODAJ_KATEGORIJU_SNIMKU:
 //                    Podsistem2Handler.zahtev8Handler();
 //                    break;
@@ -130,12 +130,12 @@ public class Klijent {
                 case DOHVATI_KORISNIKE:
                     Podsistem1Handler.zahtev19Handler();
                     break;
-//                case DOHVATI_KATEGORIJE:
-//                    Podsistem3Handler.zahtev20Handler();
-//                    break;
-//                case DOHVATI_SNIMKE:
-//                    Podsistem3Handler.zahtev21Handler();
-//                    break;
+                case DOHVATI_KATEGORIJE:
+                    Podsistem2Handler.zahtev20Handler();
+                    break;
+                case DOHVATI_SNIMKE:
+                    Podsistem2Handler.zahtev21Handler();
+                    break;
 //                case DOHVATI_KATEGORIJE_SNIMKA:
 //                    Podsistem3Handler.zahtev22Handler();
 //                    break;

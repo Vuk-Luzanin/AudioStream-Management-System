@@ -13,6 +13,7 @@ import javax.jms.JMSException;
 import javax.jms.JMSProducer;
 import javax.jms.ObjectMessage;
 import javax.jms.Topic;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.QueryParam;
@@ -112,6 +113,37 @@ public class Podsistem2Resource {
         request.dodajParametar(trajanje);
         request.dodajParametar(imeKorisnika);
         request.dodajParametar(datum);
+        return sendRequest(request);
+    }
+    
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)       // jer radi sa JMS koji nema transakcije
+    @POST
+    @Path("/zahtev7")
+    public Response promeniNaziv(@QueryParam("naziv") String naziv, @QueryParam("imeKorisnika") String imeKorisnika,
+            @QueryParam("noviNaziv") String noviNaziv) {
+        Request request = new Request();
+        request.setIdZahteva(PROMENA_NAZIVA_SNIMKA);
+        request.dodajParametar(naziv);
+        request.dodajParametar(imeKorisnika);
+        request.dodajParametar(noviNaziv);
+        return sendRequest(request);
+    }
+    
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)       // jer radi sa JMS koji nema transakcije
+    @GET
+    @Path("/zahtev20")
+    public Response dohvatiKategorije() {
+        Request request = new Request();
+        request.setIdZahteva(DOHVATI_KATEGORIJE);
+        return sendRequest(request);
+    }
+    
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)       // jer radi sa JMS koji nema transakcije
+    @GET
+    @Path("/zahtev21")
+    public Response dohvatiSnimke() {
+        Request request = new Request();
+        request.setIdZahteva(DOHVATI_SNIMKE);
         return sendRequest(request);
     }
 }

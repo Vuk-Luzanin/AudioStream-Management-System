@@ -8,7 +8,6 @@ import java.math.BigDecimal;
 import java.net.URLDecoder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
@@ -97,6 +96,12 @@ public class Main {
         if(korisnici.isEmpty())
             return new Reply(-1, "NE POSTOJI KORISNIK: " + imeKorisnika, null);
         Korisnik korisnik = korisnici.get(0);
+        int idKorisnik = korisnik.getIdKorisnik();
+        
+        // da li dati korisnik vec ima audio snimak sa tim imenom
+        List<Audio> snimci = em.createNamedQuery("Audio.findByIDKorNaziv").setParameter("idKorisnik", idKorisnik).setParameter("naziv", naziv).getResultList();
+        if (!snimci.isEmpty()) 
+            return new Reply(-1, "KORISNIK VEC IMA AUDIO SNIMAK SA NAZIVOM: " + naziv, null);
         
         BigDecimal zero = new BigDecimal("0");
         if (trajanje.compareTo(zero) < 0) 
@@ -125,10 +130,51 @@ public class Main {
         Audio a = new Audio();
         a.setNaziv(naziv);
         a.setTrajanje(trajanje);
-        a.setIdKorisnik(korisnik.getIdKorisnik());
+        a.setIdKorisnik(idKorisnik);
         a.setDatumPostavljanja(datumPostavljanja);
         persistObject(a);
         return new Reply(0, "USPESNO KREIRAN AUDIO SNIMAK: " + naziv, null);
+    }
+    
+    //zahtev 7
+    private static Reply promeniNaziv(String naziv, String imeKorisnika, String noviNaziv)
+    {
+        // da li korisnik ima snimak sa datim imenom
+        List<Korisnik> korisnici = empodsistem1.createNamedQuery("Korisnik.findByIme").setParameter("ime", imeKorisnika).getResultList();
+        if(korisnici.isEmpty())
+            return new Reply(-1, "NE POSTOJI KORISNIK: " + imeKorisnika, null);
+        Korisnik korisnik = korisnici.get(0);
+        int idKorisnik = korisnik.getIdKorisnik();
+        
+        // da li dati korisnik vec ima audio snimak sa tim imenom
+        List<Audio> snimci = em.createNamedQuery("Audio.findByIDKorNaziv").setParameter("idKorisnik", idKorisnik).setParameter("naziv", naziv).getResultList();
+        if (snimci.isEmpty()) 
+            return new Reply(-1, "KORISNIK NEMA AUDIO SNIMAK SA NAZIVOM: " + naziv, null);
+        Audio a = snimci.get(0);
+        
+        em.getTransaction().begin();
+        a.setNaziv(noviNaziv);
+        em.flush();
+        em.getTransaction().commit();
+        return new Reply(0, "USPESNO PROMENJEN NAZIV SNIMKU: " + naziv, null);
+    }
+    
+    //zahtev 20
+    private static List<Kategorija> dohvatiKategorije()
+    {
+        List<Kategorija> kategorije =  em.createNamedQuery("Kategorija.findAll").getResultList();
+        for(Kategorija k : kategorije)
+            k.setAudioList(null);
+        return kategorije;
+    }
+    
+    //zahtev 21
+    private static List<Audio> dohvatiSnimke()
+    {
+        List<Audio> snimci =  em.createNamedQuery("Audio.findAll").getResultList();
+        for(Audio a : snimci)
+            a.setKategorijaList(null);
+        return snimci;
     }
     
 
@@ -170,6 +216,32 @@ public class Main {
                         String imeKorisnika = (String) request.getParametri().get(2);
                         String datum = (String) request.getParametri().get(3);
                         reply = kreirajAudio(naziv, trajanje, imeKorisnika, datum);
+                        objMsgSend.setObject(reply);
+                        System.out.println("Obradjen zahtev...");
+                        break;
+                        
+                    case PROMENA_NAZIVA_SNIMKA:
+                        System.out.println("Zahtev od servera za promenu naziva audio snimka...");
+                        naziv = (String) request.getParametri().get(0);
+                        imeKorisnika = (String) request.getParametri().get(1);
+                        String noviNaziv = (String) request.getParametri().get(2);
+                        reply = promeniNaziv(naziv, imeKorisnika, noviNaziv);
+                        objMsgSend.setObject(reply);
+                        System.out.println("Obradjen zahtev...");
+                        break;
+                        
+                    case DOHVATI_KATEGORIJE:
+                        System.out.println("Zahtev od servera za dohvatanje svih kategorija...");
+                        List<Kategorija> kategorije = dohvatiKategorije();
+                        reply = new Reply(0, "DOHVACENE SVE KATEGORIJE", kategorije);
+                        objMsgSend.setObject(reply);
+                        System.out.println("Obradjen zahtev...");
+                        break;
+                        
+                    case DOHVATI_SNIMKE:
+                        System.out.println("Zahtev od servera za dohvatanje svih snimaka...");
+                        List<Audio> snimci = dohvatiSnimke();
+                        reply = new Reply(0, "DOHVACENI SVI SNIMCI", snimci);
                         objMsgSend.setObject(reply);
                         System.out.println("Obradjen zahtev...");
                         break;

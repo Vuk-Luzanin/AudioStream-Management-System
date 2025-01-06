@@ -133,4 +133,35 @@ public class Podsistem2Handler {
         
         sendHttpRequest(URL, "POST");
     }
+    
+    // one REST API request
+    public static void zahtev7Handler() {
+        URL = URL_START;
+        URL = URL + "/zahtev7";
+        URL = URL + "?";
+        count = 0;
+        
+        unesiParametar("naziv audio snimka", "naziv");
+        unesiParametar("ime korisnika koji je vlasnik snimka", "imeKorisnika");
+        unesiParametar("NOVI naziv audio snimka", "noviNaziv");
+        sendHttpRequest(URL, "POST");
+    }
+    
+    public static void zahtev20Handler() {
+        URL = URL_START;
+        URL = URL + "/zahtev20";
+//        URL = URL + "?";
+        count = 0;
+        
+        sendHttpRequest(URL, "GET");
+    }
+    
+        public static void zahtev21Handler() {
+        URL = URL_START;
+        URL = URL + "/zahtev21";
+//        URL = URL + "?";
+        count = 0;
+        
+        sendHttpRequest(URL, "GET");
+    }
 }
