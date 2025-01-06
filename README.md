@@ -30,12 +30,11 @@ The project consists of the following components:
 ## ⚙️ Technologies Used
 
 - **Java SE** for the client application.
-- **Spring Boot** for the central server.
 - **JMS** (Java Message Service) for inter-subsystem communication.
 - **JPA** (Java Persistence API) with **MySQL** for database operations.
 - **MySQL Workbench** for database design and management.
 - **NetBeans IDE** (or any IDE of your choice) for development.
-- **PlantUML** or similar tools for creating UML diagrams.
+- **StarUML** or similar tools for creating UML diagrams.
 
 ---
 
@@ -45,18 +44,6 @@ The system uses **MySQL** as the database backend, with the following key featur
 - Relational database design with foreign key constraints.
 - Tables for users, locations, audio recordings, categories, packages, subscriptions, listening sessions, ratings, and favorite lists.
 - Pre-filled data for testing and demonstration purposes.
-
-### Database Setup
-1. Import the SQL dump file located in the `baze/` folder to initialize the database.
-2. Ensure the database configuration matches the connection settings in the server and subsystems.
-
----
-
-## 🔄 System Workflow
-
-1. **Client Application**: Accepts user requests via console or GUI.
-2. **Central Server**: Receives and processes RESTful requests, then routes them to the appropriate subsystem via JMS.
-3. **Subsystems**: Perform database operations using JPA and respond to the server.
 
 ---
 
@@ -72,7 +59,7 @@ The system uses **MySQL** as the database backend, with the following key featur
    - Start the central server to enable communication between the client and subsystems.
 
 4. **Run the Client Application**:
-   - Use the console or GUI to send requests and interact with the system.
+   - Use the console to send requests and interact with the system.
 
 ---
 
@@ -82,25 +69,3 @@ The following UML diagrams are included in the `uml/` folder:
 1. **Class Diagrams**: Illustrating the structure of each application.
 2. **Sequence Diagram**: Depicting the workflow for subscription creation.
 
----
-
-## 📥 Submission Instructions
-
-To submit, package the following into a ZIP file named `yyyyiiii.zip` (replace `yyyy` with the year and `iiii` with your index number):
-1. `baze/` folder with the database dump.
-2. `java aplikacije/` folder containing the implemented code.
-3. `uml/` folder with UML diagrams.
-
----
-
-## 📝 Notes
-
-- Ensure all applications are properly configured and runnable during the defense.
-- You may be asked to demonstrate and modify the code during the evaluation.
-- If any parts of the task were ambiguous, reasonable assumptions were made during implementation.
-
----
-
-## 📧 Contact
-
-For any questions or issues, feel free to contact [your email or GitHub username].
