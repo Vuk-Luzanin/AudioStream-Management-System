@@ -147,6 +147,18 @@ public class Podsistem2Handler {
         sendHttpRequest(URL, "POST");
     }
     
+    public static void zahtev8Handler() {
+        URL = URL_START;
+        URL = URL + "/zahtev8";
+        URL = URL + "?";
+        count = 0;
+        
+        unesiParametar("naziv audio snimka", "naziv");
+        unesiParametar("ime korisnika koji je vlasnik snimka", "imeKorisnika");
+        unesiParametar("naziv kategorije", "nazivKategorije");
+        sendHttpRequest(URL, "POST");
+    }
+    
     public static void zahtev20Handler() {
         URL = URL_START;
         URL = URL + "/zahtev20";

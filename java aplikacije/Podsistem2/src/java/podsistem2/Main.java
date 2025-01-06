@@ -160,6 +160,46 @@ public class Main {
         return new Reply(0, "USPESNO PROMENJEN NAZIV SNIMKU: " + naziv, null);
     }
     
+    //zahtev 8
+    private static Reply dodajKategorijuSnimku(String naziv, String imeKorisnika, String nazivKategorije)
+    {
+        List<Korisnik> korisnici = empodsistem1.createNamedQuery("Korisnik.findByIme")
+                .setParameter("ime", imeKorisnika)
+                .getResultList();
+        if(korisnici.isEmpty())
+            return new Reply(-1, "NE POSTOJI KORISNIK: " + imeKorisnika, null);
+        Korisnik korisnik = korisnici.get(0);
+        int idKorisnik = korisnik.getIdKorisnik();
+        
+        // da li dati korisnik ima audio snimak sa tim imenom
+        List<Audio> snimci = em.createNamedQuery("Audio.findByIDKorNaziv")
+                .setParameter("idKorisnik", idKorisnik)
+                .setParameter("naziv", naziv)
+                .getResultList();
+        if (snimci.isEmpty()) 
+            return new Reply(-1, "KORISNIK NEMA AUDIO SNIMAK SA NAZIVOM: " + naziv, null);
+        Audio a = snimci.get(0);
+        
+        List<Kategorija> sveKategorije = em.createNamedQuery("Kategorija.findByNaziv")
+                .setParameter("naziv", nazivKategorije)
+                .getResultList();
+        if(sveKategorije.isEmpty())
+            return new Reply(-1, "NE POSTOJI KATEGORIJA: " + nazivKategorije, null);
+        Kategorija k = sveKategorije.get(0);
+        
+        // dohvati kategorije za dati snimak
+        if (a.getKategorijaList().contains(k)) {
+            return new Reply(-1, "AUDIO SNIMAK VEĆ POSEDUJE KATEGORIJU: " + nazivKategorije, null);
+        }
+
+        em.getTransaction().begin();
+        a.getKategorijaList().add(k);
+        k.getAudioList().add(a);
+        em.flush();
+        em.getTransaction().commit();
+        return new Reply(0, "USPESNO DODANA KATEGORIJA SNIMKU: " + naziv, null);
+    }
+    
     //zahtev 20
     private static List<Kategorija> dohvatiKategorije()
     {
@@ -251,6 +291,16 @@ public class Main {
                         imeKorisnika = (String) request.getParametri().get(1);
                         String noviNaziv = (String) request.getParametri().get(2);
                         reply = promeniNaziv(naziv, imeKorisnika, noviNaziv);
+                        objMsgSend.setObject(reply);
+                        System.out.println("Obradjen zahtev...");
+                        break;
+                        
+                    case DODAJ_KATEGORIJU_SNIMKU:
+                        System.out.println("Zahtev od servera za dodavanje kategorije snimku...");
+                        naziv = (String) request.getParametri().get(0);
+                        imeKorisnika = (String) request.getParametri().get(1);
+                        nazivKategorije = (String) request.getParametri().get(2);
+                        reply = dodajKategorijuSnimku(naziv, imeKorisnika, nazivKategorije);
                         objMsgSend.setObject(reply);
                         System.out.println("Obradjen zahtev...");
                         break;
