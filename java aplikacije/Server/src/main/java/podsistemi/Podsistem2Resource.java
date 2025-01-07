@@ -95,7 +95,7 @@ public class Podsistem2Resource {
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)       // jer radi sa JMS koji nema transakcije (mozda radi i bez?!)
     @POST
     @Path("/zahtev5")
-    public Response kreirajGrad(@QueryParam("nazivKategorije") String nazivKategorije) {
+    public Response kreirajKategoriju(@QueryParam("nazivKategorije") String nazivKategorije) {
         Request request = new Request();
         request.setIdZahteva(KREIRAJ_KATEGORIJU);
         request.dodajParametar(nazivKategorije);

@@ -113,9 +113,9 @@ public class Klijent {
                 case PROMENA_CENE_PAKETA:
                     Podsistem3Handler.zahtev10Handler();
                     break;
-//                case KREIRAJ_PRETPLATU:
-//                    Podsistem3Handler.zahtev11Handler();
-//                    break;
+                case KREIRAJ_PRETPLATU:
+                    Podsistem3Handler.zahtev11Handler(curKorisnikId);
+                    break;
 //                case KREIRAJ_SLUSANJE:
 //                    Podsistem3Handler.zahtev12Handler();
 //                    break;

@@ -97,7 +97,7 @@ public class Podsistem3Resource {
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)       // jer radi sa JMS koji nema transakcije (mozda radi i bez?!)
     @POST
     @Path("/zahtev9")
-    public Response kreirajGrad(@QueryParam("naziv") String naziv, @QueryParam("cena") String cena) {
+    public Response kreirajPaket(@QueryParam("naziv") String naziv, @QueryParam("cena") String cena) {
         Request request = new Request();
         request.setIdZahteva(KREIRAJ_PAKET);
         request.dodajParametar(naziv);
@@ -113,6 +113,19 @@ public class Podsistem3Resource {
         request.setIdZahteva(PROMENA_CENE_PAKETA);
         request.dodajParametar(naziv);
         request.dodajParametar(cena);
+        return sendRequest(request);
+    }
+    
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)       // jer radi sa JMS koji nema transakcije (mozda radi i bez?!)
+    @POST
+    @Path("/zahtev11")
+    public Response kreirajGrad(@QueryParam("nazivPaketa") String nazivPaketa, @QueryParam("datum") String datum,
+            @QueryParam("curKorisnikId") int curKorisnikId) {
+        Request request = new Request();
+        request.setIdZahteva(KREIRAJ_PRETPLATU);
+        request.dodajParametar(nazivPaketa);
+        request.dodajParametar(datum);
+        request.dodajParametar(curKorisnikId);
         return sendRequest(request);
     }
 }

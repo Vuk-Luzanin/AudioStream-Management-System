@@ -7,6 +7,10 @@ import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -97,6 +101,45 @@ public class Podsistem3Handler {
         
         unesiParametar("naziv paketa", "naziv");
         unesiParametar("novu cenu paketa", "cena");
+        sendHttpRequest(URL, "POST");
+    }
+    
+    public static void zahtev11Handler(Integer curKorisnikId) {
+        URL = URL_START;
+        URL = URL + "/zahtev11";
+        URL = URL + "?";
+        count = 0;
+        
+        unesiParametar("naziv paketa", "nazivPaketa");
+        System.out.print("Unesite datum postavljanja videa (format: yyyy-MM-dd HH:mm:ss): ");
+        Scanner in = new Scanner(System.in);
+        String datumString = in.nextLine();
+        
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date datumPostavljanja = null;
+        try
+        {
+            datumPostavljanja = dateFormat.parse(datumString);
+            
+        } catch (ParseException ex)
+        {
+            System.out.println("Datum nije u ispravnom formatu. Pokušajte ponovo.");
+            return;
+        }
+        
+        // date must be encoded
+        String encodedDatumString = datumString;
+        
+        try
+        {
+            encodedDatumString = URLEncoder.encode(datumString, StandardCharsets.UTF_8.toString());
+        } catch (UnsupportedEncodingException ex)
+        {
+            Logger.getLogger(Klijent.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        dodajNaURL("datum", encodedDatumString);
+        
+        dodajNaURL("curKorisnikId", curKorisnikId.toString());
         sendHttpRequest(URL, "POST");
     }
 }

@@ -106,6 +106,14 @@ public class Main {
         return new Reply(0, "USPESNO PROMENJENA CENA PAKETU: " + naziv, null);
     }
     
+    //zahtev 11
+    // curKorisnikId - TRENUTNO ULOGOVAN KORISNIK
+    private static Reply kreirajPretplatu(String nazivPaketa, String datum, int curKorisnikId)
+    { 
+        // NASTAVITI
+        return new Reply(0, "USPESNO KREIRANA PRETPLATA: " + nazivPaketa, null);
+    }
+    
     
     public static void main(String[] args) {
         System.out.println("Podsistem3 pokrenut...");
@@ -145,6 +153,16 @@ public class Main {
                         naziv = (String) request.getParametri().get(0);
                         cena = (String) request.getParametri().get(1);
                         reply = promeniCenu(naziv, cena);
+                        objMsgSend.setObject(reply);
+                        System.out.println("Obradjen zahtev...");
+                        break;
+                        
+                    case KREIRAJ_PRETPLATU:
+                        System.out.println("Zahtev od servera za kreiranje pretplate...");
+                        String nazivPaketa = (String) request.getParametri().get(0);
+                        String datum = (String) request.getParametri().get(1);
+                        int curKorisnikId = (int) request.getParametri().get(2);
+                        reply = kreirajPretplatu(nazivPaketa, datum, curKorisnikId);
                         objMsgSend.setObject(reply);
                         System.out.println("Obradjen zahtev...");
                         break;
