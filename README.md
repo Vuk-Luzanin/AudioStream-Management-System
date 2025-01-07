@@ -51,15 +51,33 @@ The system uses **MySQL** as the database backend, with the following key featur
 
 1. **Set Up the Database**:
    - Install MySQL and import the database dump file from the `baze/` folder.
+   - Then initialize databases (podsistem1, podsistem2 and podsistem3)
 
-2. **Run the Subsystems**:
-   - Navigate to each subsystem folder and start the application.
+2. **Set up Glassfish server**:
+   - In Netbeans IDE, in Services -> Servers -> add Server -> Glassfish server 5.1.0.
+   - Start Glassfish server and open http://localhost:4848/
+   - create JDBC Connection Pools: (podsistem1Pool, podsistem2Pool and podsistem3Pool) with following specifications:
+    - Resource Type: `javax.sql.DataSource`
+    - Datasource Classname: `com.mysql.cj.jdbc.MysqlDataSource`
+  - In Additional Properties:
+    - password: `123` (The password for your MySQL user must not be empty, and you can change it in MySQL Workbench -> Administration -> Users and Privileges)
+    - databaseName: `podsistem1`/`podsistem2`/`podsistem3` for the corresponding pool
+    - serverName: `localhost`
+    - user: The name of your MySQL user, by default there is a user named `root`.
+    - portnumber: By default `3306`, but sometimes MySQL Workbench may set it to `3308`
+    - useSSL: `false`
+    - allowPublicKeyRetrieval: `true`
+  - create JDBC Resources: `podsistem1Resource`/`podsistem1Resource`/`podsistem1Resource` for the corresponding pool
+  - create JMS Connection Factory: `projectConnFactory`
+  - create JMS Destination Resources: `projectTopicServer`
+  - Add `mysql-connector-j-9.1.0.jar` (given in biblioteke folder) in GlassFish server installation folder
 
-3. **Run the Central Server**:
-   - Start the central server to enable communication between the client and subsystems.
+2. **Set up Netbeans IDE**
+  - in Services -> Databases -> add Driver -> add `mysql-connector-j-9.1.0.jar` file
 
-4. **Run the Client Application**:
-   - Use the console to send requests and interact with the system.
+3. **Start project** 
+  - Set Java JDK 1.8 for every project
+  - Run all applications
 
 ---
 
