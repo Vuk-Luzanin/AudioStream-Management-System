@@ -79,7 +79,7 @@ public class Main {
         em.getTransaction().commit();
     }
     
-    //zahtev 5
+    //zahtev 9
     private static Reply kreirajPaket(String naziv, String cena)
     {
         List<Paket> paketi = em.createNamedQuery("Paket.findByNaziv").setParameter("naziv", naziv).getResultList();
@@ -91,6 +91,19 @@ public class Main {
         p.setCena(new BigDecimal(cena));
         persistObject(p);
         return new Reply(0, "USPESNO KREIRAN PAKET: " + naziv, null);
+    }
+    
+    //zahtev 10
+    private static Reply promeniCenu(String naziv, String cena)
+    {
+        List<Paket> paketi = em.createNamedQuery("Paket.findByNaziv").setParameter("naziv", naziv).getResultList();
+        if(paketi.isEmpty())
+            return new Reply(-1, "NE POSTOJI PAKET: " + naziv, null);
+        Paket p = paketi.get(0);
+        
+        p.setCena(new BigDecimal(cena));
+        persistObject(p);
+        return new Reply(0, "USPESNO PROMENJENA CENA PAKETU: " + naziv, null);
     }
     
     
@@ -123,6 +136,15 @@ public class Main {
                         String naziv = (String) request.getParametri().get(0);
                         String cena = (String) request.getParametri().get(1);
                         reply = kreirajPaket(naziv, cena);
+                        objMsgSend.setObject(reply);
+                        System.out.println("Obradjen zahtev...");
+                        break;
+                        
+                    case PROMENA_CENE_PAKETA:
+                        System.out.println("Zahtev od servera za promenu cene paketa...");
+                        naziv = (String) request.getParametri().get(0);
+                        cena = (String) request.getParametri().get(1);
+                        reply = promeniCenu(naziv, cena);
                         objMsgSend.setObject(reply);
                         System.out.println("Obradjen zahtev...");
                         break;

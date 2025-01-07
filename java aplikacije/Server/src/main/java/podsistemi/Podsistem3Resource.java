@@ -102,8 +102,17 @@ public class Podsistem3Resource {
         request.setIdZahteva(KREIRAJ_PAKET);
         request.dodajParametar(naziv);
         request.dodajParametar(cena);
-        System.out.println("usao u ovo sranje");
         return sendRequest(request);
     }
     
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)       // jer radi sa JMS koji nema transakcije (mozda radi i bez?!)
+    @POST
+    @Path("/zahtev10")
+    public Response promeniCenu(@QueryParam("naziv") String naziv, @QueryParam("cena") String cena) {
+        Request request = new Request();
+        request.setIdZahteva(PROMENA_CENE_PAKETA);
+        request.dodajParametar(naziv);
+        request.dodajParametar(cena);
+        return sendRequest(request);
+    }
 }

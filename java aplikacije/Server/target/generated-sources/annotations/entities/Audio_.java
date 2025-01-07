@@ -8,7 +8,7 @@ import javax.persistence.metamodel.ListAttribute;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
 
-@Generated(value="EclipseLink-2.7.12.v20230209-rNA", date="2025-01-07T23:29:18")
+@Generated(value="EclipseLink-2.7.12.v20230209-rNA", date="2025-01-07T23:40:52")
 @StaticMetamodel(Audio.class)
 public class Audio_ { 
 

@@ -110,26 +110,26 @@ public class Klijent {
                 case KREIRAJ_PAKET:
                     Podsistem3Handler.zahtev9Handler();
                     break;
-//                case PROMENA_CENE_PAKETA:
-//                    Podsistem2Handler.zahtev10Handler();
-//                    break;
+                case PROMENA_CENE_PAKETA:
+                    Podsistem3Handler.zahtev10Handler();
+                    break;
 //                case KREIRAJ_PRETPLATU:
-//                    Podsistem2Handler.zahtev11Handler();
+//                    Podsistem3Handler.zahtev11Handler();
 //                    break;
 //                case KREIRAJ_SLUSANJE:
-//                    Podsistem2Handler.zahtev12Handler();
+//                    Podsistem3Handler.zahtev12Handler();
 //                    break;
 //                case DODAJ_OMILJENI_SNIMAK:
-//                    Podsistem2Handler.zahtev13Handler();
+//                    Podsistem3Handler.zahtev13Handler();
 //                    break;
 //                case KREIRAJ_OCENU:
-//                    Podsistem2Handler.zahtev14Handler();
+//                    Podsistem3Handler.zahtev14Handler();
 //                    break;
 //                case PROMENA_OCENE:
-//                    Podsistem2Handler.zahtev15Handler();
+//                    Podsistem3Handler.zahtev15Handler();
 //                    break;
 //                case BRISANJE_OCENE:
-//                    Podsistem2Handler.zahtev16Handler();
+//                    Podsistem3Handler.zahtev16Handler();
 //                    break;
                 case BRISANJE_SNIMKA:
                     Podsistem2Handler.zahtev17Handler(curKorisnikId);

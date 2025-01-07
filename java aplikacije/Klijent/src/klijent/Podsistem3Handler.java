@@ -88,4 +88,15 @@ public class Podsistem3Handler {
         unesiParametar("cenu paketa", "cena");
         sendHttpRequest(URL, "POST");
     }
+    
+    public static void zahtev10Handler() {
+        URL = URL_START;
+        URL = URL + "/zahtev10";
+        URL = URL + "?";
+        count = 0;
+        
+        unesiParametar("naziv paketa", "naziv");
+        unesiParametar("novu cenu paketa", "cena");
+        sendHttpRequest(URL, "POST");
+    }
 }
