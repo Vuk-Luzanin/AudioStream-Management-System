@@ -4,6 +4,8 @@ package podsistemi;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.Resource;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 import javax.jms.ConnectionFactory;
 import javax.jms.JMSConsumer;
 import javax.jms.JMSContext;
@@ -11,7 +13,9 @@ import javax.jms.JMSException;
 import javax.jms.JMSProducer;
 import javax.jms.ObjectMessage;
 import javax.jms.Topic;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 import komunikacija.Reply;
 import komunikacija.Request;
@@ -54,18 +58,18 @@ public class Podsistem3Resource {
                 producer = context.createProducer();
             }
             
-            System.out.println("\nServer salje zahtev broj " + Integer.toString(request.getIdZahteva()) + " podsistemu2\n");
+            System.out.println("\nServer salje zahtev broj " + Integer.toString(request.getIdZahteva()) + " podsistemu3\n");
             
             ObjectMessage objMsg = context.createObjectMessage(request);
             objMsg.setIntProperty("id", PODSISTEM_ID);
             
             producer.send(topic, objMsg);
             
-            System.out.println("Poslat zahtev broj " + Integer.toString(request.getIdZahteva()) + " podsistemu2\n");
+            System.out.println("Poslat zahtev broj " + Integer.toString(request.getIdZahteva()) + " podsistemu3\n");
             
             ObjectMessage objMsgRec = (ObjectMessage)consumer.receive();        // blocking call
             Reply reply = (Reply) objMsgRec.getObject();
-            System.out.println("\nPrimio odgovor od podsistema 2\n");
+            System.out.println("\nPrimio odgovor od podsistema 3\n");
             System.out.println(reply.getMessage());
             
             // close communication
@@ -88,6 +92,18 @@ public class Podsistem3Resource {
         
         // reply didn't succeed
         return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("EXCEPTION").build();
+    }
+    
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)       // jer radi sa JMS koji nema transakcije (mozda radi i bez?!)
+    @POST
+    @Path("/zahtev9")
+    public Response kreirajGrad(@QueryParam("naziv") String naziv, @QueryParam("cena") String cena) {
+        Request request = new Request();
+        request.setIdZahteva(KREIRAJ_PAKET);
+        request.dodajParametar(naziv);
+        request.dodajParametar(cena);
+        System.out.println("usao u ovo sranje");
+        return sendRequest(request);
     }
     
 }

@@ -10,11 +10,13 @@ import java.net.URLEncoder;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import static klijent.Podsistem2Handler.sendHttpRequest;
+import static klijent.Podsistem2Handler.unesiParametar;
 
 
 public class Podsistem3Handler {
     
-    private static String URL = "http://localhost:8080/Server/resources/podsistem2";        // current url
+    private static String URL = "http://localhost:8080/Server/resources/podsistem3";        // current url
     private static String URL_START = URL;                                                  // saves start url
     private static int count = 0;                                                           // number of added parameters in url
     private static int OK = 200;                                                            // ok status
@@ -73,5 +75,17 @@ public class Podsistem3Handler {
         Scanner in = new Scanner(System.in);
         s = in.nextLine();
         dodajNaURL(paramRest, s);
+    }
+    
+    // one REST API request
+    public static void zahtev9Handler() {
+        URL = URL_START;
+        URL = URL + "/zahtev9";
+        URL = URL + "?";
+        count = 0;
+        
+        unesiParametar("naziv paketa", "naziv");
+        unesiParametar("cenu paketa", "cena");
+        sendHttpRequest(URL, "POST");
     }
 }

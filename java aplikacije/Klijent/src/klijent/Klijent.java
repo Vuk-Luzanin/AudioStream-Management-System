@@ -107,9 +107,9 @@ public class Klijent {
                 case DODAJ_KATEGORIJU_SNIMKU:
                     Podsistem2Handler.zahtev8Handler();
                     break;
-//                case KREIRAJ_PAKET:
-//                    Podsistem2Handler.zahtev9Handler();
-//                    break;
+                case KREIRAJ_PAKET:
+                    Podsistem3Handler.zahtev9Handler();
+                    break;
 //                case PROMENA_CENE_PAKETA:
 //                    Podsistem2Handler.zahtev10Handler();
 //                    break;

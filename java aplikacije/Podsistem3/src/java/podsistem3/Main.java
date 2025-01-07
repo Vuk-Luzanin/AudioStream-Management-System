@@ -1,6 +1,7 @@
 
 package podsistem3;
 
+import entities.Paket;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.logging.Level;
@@ -78,6 +79,21 @@ public class Main {
         em.getTransaction().commit();
     }
     
+    //zahtev 5
+    private static Reply kreirajPaket(String naziv, String cena)
+    {
+        List<Paket> paketi = em.createNamedQuery("Paket.findByNaziv").setParameter("naziv", naziv).getResultList();
+        if(!paketi.isEmpty())
+            return new Reply(-1, "VEC POSTOJI PAKET: " + naziv, null);
+        
+        Paket p = new Paket();
+        p.setNaziv(naziv);
+        p.setCena(new BigDecimal(cena));
+        persistObject(p);
+        return new Reply(0, "USPESNO KREIRAN PAKET: " + naziv, null);
+    }
+    
+    
     public static void main(String[] args) {
         System.out.println("Podsistem3 pokrenut...");
         
@@ -102,6 +118,14 @@ public class Main {
                 
                 switch (request.getIdZahteva()) {
                     
+                    case KREIRAJ_PAKET:
+                        System.out.println("Zahtev od servera za kreiranje paketa...");
+                        String naziv = (String) request.getParametri().get(0);
+                        String cena = (String) request.getParametri().get(1);
+                        reply = kreirajPaket(naziv, cena);
+                        objMsgSend.setObject(reply);
+                        System.out.println("Obradjen zahtev...");
+                        break;
                 }
                 
                 objMsgSend.setIntProperty("id", ID_SEND);       // salje odgovor serveru

@@ -4,6 +4,7 @@ entities/Kategorija_.class
 entities/Audio.class
 com/mycompany/server/resources/JavaEE8Resource.class
 komunikacija/Request.class
+podsistemi/Podsistem3Resource.class
 entities/Kategorija.class
 entities/Audio_.class
 podsistemi/Podsistem2Resource.class
