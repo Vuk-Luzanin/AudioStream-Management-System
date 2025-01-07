@@ -97,6 +97,7 @@ public class Podsistem1Handler {
         unesiParametar("godiste korisnika - godina", "godiste");
         unesiParametar("pol korisnika - (M / Z)", "pol");
         unesiParametar("naziv mesta korisnika", "mesto");
+        unesiParametar("sifru za korisnika", "sifra");
         sendHttpRequest(URL, "POST");
     }
     
@@ -140,7 +141,17 @@ public class Podsistem1Handler {
         sendHttpRequest(URL, "GET");
     }
 
-    
-    
-    
+     public static int zahtevLogin() {
+        URL = URL_START;
+        URL = URL + "/zahtevLogin";
+        URL = URL + "?";
+        count = 0;
+        
+        unesiParametar("ime korisnika", "imeKorisnika");   
+        unesiParametar("sifru", "sifra");
+        
+        String resp = sendHttpRequest(URL, "GET");
+        return Integer.parseInt(resp);
+    }
+     
 }

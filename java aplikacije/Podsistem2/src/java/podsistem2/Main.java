@@ -199,7 +199,7 @@ public class Main {
         em.getTransaction().commit();
         return new Reply(0, "USPESNO DODANA KATEGORIJA SNIMKU: " + naziv, null);
     }
-    
+  
     //zahtev 20
     private static List<Kategorija> dohvatiKategorije()
     {

@@ -31,7 +31,8 @@ public class Klijent {
         "24. Dohvatanje svih pretplata za korisnika\n"+ 
         "25. Dohvatanje svih slušanja za audio snimak\n"+ 
         "26. Dohvatanje svih ocena za audio snimak\n"+ 
-        "27. Dohvatanje liste omiljenih audio snimaka za korisnika\n";
+        "27. Dohvatanje liste omiljenih audio snimaka za korisnika\n"+
+        "100. Izlogujte se\n";
     
     private static final int KREIRAJ_GRAD = 1;
     private static final int KREIRAJ_KORISNIKA = 2;
@@ -60,11 +61,20 @@ public class Klijent {
     private static final int DOHVATI_SLUSANJA_SNIMKA = 25;
     private static final int DOHVATI_OCENE_SNIMKA = 26;
     private static final int DOHVATI_OMILJENE_SNIMKE = 27;
-   
+    private static final int LOGOUT = 100;
+   private static int curKorisnikId = -1;
 
     public static void main(String[] args) {
         System.out.println("Klijent pokrenut...");
         while (true) {
+            
+            // DODATI DA SERVER PO POKRETANJU DODAJE KORISNIKA KOJI SE ZOVE NPR. ADMIN!
+            while(curKorisnikId == -1)
+            {
+                curKorisnikId = Podsistem1Handler.zahtevLogin();
+                if(curKorisnikId == -1) System.out.println("NEUSPESNO LOGOVANJE");
+            }
+            System.out.println("USPESNO STE SE ULOGOVALI");
             
             System.out.println(menu);
             System.out.println("Izaberite jedan od zahteva unosom broja zahteva: ");
@@ -154,6 +164,11 @@ public class Klijent {
 //                case DOHVATI_OMILJENE_SNIMKE:
 //                    Podsistem3Handler.zahtev27Handler();
 //                    break;
+                  case LOGOUT:
+                    System.out.println("Logging out...");
+                    curKorisnikId = -1;
+                    System.out.println("IZLOGOVANI STE\nPONOVO UNESITE VASE PODATKE");
+                    break;
                 default:
                     System.out.println("Nepoznata opcija. Molimo pokušajte ponovo.");
                     break;

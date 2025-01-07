@@ -44,6 +44,8 @@ public class Podsistem1Resource {
     
     private static final int PODSISTEM_ID = 1;
     
+    private static final int LOGIN = 100;
+    
     
     private Response sendRequest(Request request) {
         try {
@@ -104,7 +106,8 @@ public class Podsistem1Resource {
     @POST
     @Path("/zahtev2")
     public Response kreirajKorisnik(@QueryParam("imeKorisnika") String imeKorisnika, @QueryParam("email") String email,
-            @QueryParam("godiste") int godiste, @QueryParam("pol") String pol, @QueryParam("mesto") String mesto) {
+            @QueryParam("godiste") int godiste, @QueryParam("pol") String pol, @QueryParam("mesto") String mesto,
+            @QueryParam("sifra") String sifra) {
         Request request = new Request();
         request.setIdZahteva(KREIRAJ_KORISNIKA);
         request.dodajParametar(imeKorisnika);
@@ -112,6 +115,7 @@ public class Podsistem1Resource {
         request.dodajParametar(godiste);
         request.dodajParametar(pol);
         request.dodajParametar(mesto);
+        request.dodajParametar(sifra);
         return sendRequest(request);
     }
     
@@ -155,5 +159,16 @@ public class Podsistem1Resource {
         return sendRequest(request);
     }
     
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+    @GET
+    @Path("/zahtevLogin")
+    public Response login(@QueryParam("imeKorisnika")String imeKorisnika, @QueryParam("sifra") String sifra)
+    {
+        Request request = new Request();
+        request.setIdZahteva(LOGIN);
+        request.dodajParametar(imeKorisnika);
+        request.dodajParametar(sifra);
+        return sendRequest(request);
+    }
     
 }

@@ -33,7 +33,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Korisnik.findByIme", query = "SELECT k FROM Korisnik k WHERE k.ime = :ime"),
     @NamedQuery(name = "Korisnik.findByEmail", query = "SELECT k FROM Korisnik k WHERE k.email = :email"),
     @NamedQuery(name = "Korisnik.findByGodiste", query = "SELECT k FROM Korisnik k WHERE k.godiste = :godiste"),
-    @NamedQuery(name = "Korisnik.findByPol", query = "SELECT k FROM Korisnik k WHERE k.pol = :pol")})
+    @NamedQuery(name = "Korisnik.findByPol", query = "SELECT k FROM Korisnik k WHERE k.pol = :pol"),
+    @NamedQuery(name = "Korisnik.findBySifra", query = "SELECT k FROM Korisnik k WHERE k.sifra = :sifra")})
 public class Korisnik implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -61,6 +62,11 @@ public class Korisnik implements Serializable {
     @NotNull
     @Column(name = "Pol")
     private Character pol;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 255)
+    @Column(name = "sifra")
+    private String sifra;
     @JoinColumn(name = "idMesto", referencedColumnName = "idMesto")
     @ManyToOne
     private Mesto idMesto;
@@ -72,12 +78,13 @@ public class Korisnik implements Serializable {
         this.idKorisnik = idKorisnik;
     }
 
-    public Korisnik(Integer idKorisnik, String ime, String email, int godiste, Character pol) {
+    public Korisnik(Integer idKorisnik, String ime, String email, int godiste, Character pol, String sifra) {
         this.idKorisnik = idKorisnik;
         this.ime = ime;
         this.email = email;
         this.godiste = godiste;
         this.pol = pol;
+        this.sifra = sifra;
     }
 
     public Integer getIdKorisnik() {
@@ -118,6 +125,14 @@ public class Korisnik implements Serializable {
 
     public void setPol(Character pol) {
         this.pol = pol;
+    }
+
+    public String getSifra() {
+        return sifra;
+    }
+
+    public void setSifra(String sifra) {
+        this.sifra = sifra;
     }
 
     public Mesto getIdMesto() {

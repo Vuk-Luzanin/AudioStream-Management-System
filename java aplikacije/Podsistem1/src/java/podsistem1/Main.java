@@ -47,6 +47,8 @@ public class Main {
     
     private static int ID_SEND = 0;
     
+    private static final int LOGIN = 100;
+    
     
     private static void persistObject(Object o) {
         em.getTransaction().begin();
@@ -68,7 +70,7 @@ public class Main {
     }
     
     //zahtev 2
-    private static Reply kreirajKorisnika(String imeKorisnika, String email, int godiste, String pol, String nazivMesta)
+    private static Reply kreirajKorisnika(String imeKorisnika, String email, int godiste, String pol, String nazivMesta, String sifra)
     {
         List<Mesto> mesta = em.createNamedQuery("Mesto.findByNaziv").setParameter("naziv", nazivMesta).getResultList();
         if(mesta.isEmpty())
@@ -80,7 +82,8 @@ public class Main {
             return new Reply(-1, "VEC POSTOJI KORISNIK: " + imeKorisnika, null);
         
         Korisnik korisnik = new Korisnik();
-        korisnik.setIme(imeKorisnika); korisnik.setEmail(email); korisnik.setGodiste(godiste); korisnik.setPol(pol.charAt(0)); korisnik.setIdMesto(m);
+        korisnik.setIme(imeKorisnika); korisnik.setEmail(email); korisnik.setGodiste(godiste); 
+        korisnik.setPol(pol.charAt(0)); korisnik.setIdMesto(m); korisnik.setSifra(sifra);
         persistObject(korisnik);
         return new Reply(0, "USPESNO KREIRAN KORISNIK: " + imeKorisnika, null);  
     }
@@ -138,6 +141,19 @@ public class Main {
         return korisnici;
     }
 
+    // zahtevLogin
+    private static Reply login(String imeKorisnika, String sifra)
+    {
+        List<Korisnik> korisnici = em.createNamedQuery("Korisnik.findByIme").setParameter("ime", imeKorisnika).getResultList();
+        if(korisnici.isEmpty())
+            return new Reply(-1, "NE POSTOJI KORISNIK: " + imeKorisnika, null);
+        Korisnik k = korisnici.get(0);
+        
+        if(!k.getSifra().equals(sifra))
+            return new Reply(-1, "-1", null);
+        
+        return new Reply(0, Integer.toString(k.getIdKorisnik()), null);
+    }
     
     public static void main(String[] args) {
         System.out.println("Podsistem1 pokrenut...");
@@ -178,8 +194,8 @@ public class Main {
                         int godiste         = (int) params.get(2);
                         String pol          = (String) params.get(3);
                         String nazivMesta   = (String) params.get(4);
-                        
-                        reply = kreirajKorisnika(imeKorisnika, email, godiste, pol, nazivMesta);
+                        String sifra   = (String) params.get(5);
+                        reply = kreirajKorisnika(imeKorisnika, email, godiste, pol, nazivMesta, sifra);
                         objMsgSend.setObject(reply);
                         System.out.println("Obradjen zahtev...");
                         break;
@@ -216,6 +232,16 @@ public class Main {
                         System.out.println("Zahtev od servera za dohvatanje svih korisnika...");
                         List<Korisnik> korisnici = getSviKorisnici();
                         reply = new Reply(0, "DOHVACENI SVI KORISNICI", korisnici);
+                        objMsgSend.setObject(reply);
+                        System.out.println("Obradjen zahtev...");
+                        break;
+                        
+                    case LOGIN:
+                        System.out.println("Zahtev od servera za login...");
+                        params = request.getParametri();
+                        imeKorisnika = (String)params.get(0);
+                        sifra = (String)params.get(1);
+                        reply = login(imeKorisnika, sifra);
                         objMsgSend.setObject(reply);
                         System.out.println("Obradjen zahtev...");
                         break;

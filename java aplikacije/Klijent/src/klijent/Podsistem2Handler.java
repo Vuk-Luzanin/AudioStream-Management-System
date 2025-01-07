@@ -14,8 +14,6 @@ import java.util.Date;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import static klijent.Podsistem1Handler.sendHttpRequest;
-import static klijent.Podsistem1Handler.unesiParametar;
 
 
 public class Podsistem2Handler {
@@ -158,6 +156,17 @@ public class Podsistem2Handler {
         unesiParametar("naziv kategorije", "nazivKategorije");
         sendHttpRequest(URL, "POST");
     }
+    
+//    public static void zahtev17Handler() {
+//        URL = URL_START;
+//        URL = URL + "/zahtev17";
+//        URL = URL + "?";
+//        count = 0;
+//        
+//        unesiParametar("naziv audio snimka", "naziv");
+//        unesiParametar("ime korisnika koji je vlasnik snimka", "imeKorisnika");
+//        sendHttpRequest(URL, "GET");
+//    }
     
     public static void zahtev20Handler() {
         URL = URL_START;
