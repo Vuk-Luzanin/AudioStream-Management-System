@@ -199,6 +199,33 @@ public class Main {
         em.getTransaction().commit();
         return new Reply(0, "USPESNO DODANA KATEGORIJA SNIMKU: " + naziv, null);
     }
+    
+    //zahtev 17
+    private static Reply obrisiSnimak(String naziv, String imeKorisnika, int curKorisnikId)
+    {
+        List<Korisnik> korisnici = empodsistem1.createNamedQuery("Korisnik.findByIme")
+                .setParameter("ime", imeKorisnika)
+                .getResultList();
+        if(korisnici.isEmpty())
+            return new Reply(-1, "NE POSTOJI KORISNIK: " + imeKorisnika, null);
+        Korisnik korisnik = korisnici.get(0);               // korisnik koji zeli da obrise snimak
+        
+        if (korisnik.getIdKorisnik() != curKorisnikId)
+        {
+            return new Reply(-1, "MORATE BITI ULOGOVAN KAO " + imeKorisnika + " DA BISTE BRISALI NJEGOVE SNIMKE", null);
+        }
+        
+        List<Audio> snimci = em.createNamedQuery("Audio.findByIDKorNaziv")      // snimak ulogovanog korisnika sa zadatim nazivom
+                .setParameter("idKorisnik", curKorisnikId)
+                .setParameter("naziv", naziv)
+                .getResultList();
+        if (snimci.isEmpty()) 
+            return new Reply(-1, "ULOGOVANI KORISNIK NEMA AUDIO SNIMAK SA NAZIVOM: " + naziv, null);
+        Audio a = snimci.get(0);
+        
+        removeObject(a);
+        return new Reply(0, "USPESNO OBRISAM SNIMAK: " + naziv + ", VLASNIKA: " + imeKorisnika, null);
+    }
   
     //zahtev 20
     private static List<Kategorija> dohvatiKategorije()
@@ -301,6 +328,16 @@ public class Main {
                         imeKorisnika = (String) request.getParametri().get(1);
                         nazivKategorije = (String) request.getParametri().get(2);
                         reply = dodajKategorijuSnimku(naziv, imeKorisnika, nazivKategorije);
+                        objMsgSend.setObject(reply);
+                        System.out.println("Obradjen zahtev...");
+                        break;
+                        
+                    case BRISANJE_SNIMKA:
+                        System.out.println("Zahtev od servera za brisanje audio snimka od strane korisnika koji ga je postavio...");
+                        naziv = (String) request.getParametri().get(0);
+                        imeKorisnika = (String) request.getParametri().get(1);
+                        int curKorisnikId = (int) request.getParametri().get(2);
+                        reply = obrisiSnimak(naziv, imeKorisnika, curKorisnikId);
                         objMsgSend.setObject(reply);
                         System.out.println("Obradjen zahtev...");
                         break;

@@ -92,7 +92,7 @@ public class Podsistem2Resource {
     }
     
     
-    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)       // jer radi sa JMS koji nema transakcije
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)       // jer radi sa JMS koji nema transakcije (mozda radi i bez?!)
     @POST
     @Path("/zahtev5")
     public Response kreirajGrad(@QueryParam("nazivKategorije") String nazivKategorije) {
@@ -139,6 +139,19 @@ public class Podsistem2Resource {
         request.dodajParametar(naziv);
         request.dodajParametar(imeKorisnika);
         request.dodajParametar(nazivKategorije);
+        return sendRequest(request);
+    }
+    
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)       // jer radi sa JMS koji nema transakcije
+    @POST
+    @Path("/zahtev17")
+    public Response obrisiSnimak(@QueryParam("naziv") String naziv, @QueryParam("imeKorisnika") String imeKorisnika,
+            @QueryParam("curKorisnikId") int curKorisnikId) {
+        Request request = new Request();
+        request.setIdZahteva(BRISANJE_SNIMKA);
+        request.dodajParametar(naziv);
+        request.dodajParametar(imeKorisnika);
+        request.dodajParametar(curKorisnikId);
         return sendRequest(request);
     }
     

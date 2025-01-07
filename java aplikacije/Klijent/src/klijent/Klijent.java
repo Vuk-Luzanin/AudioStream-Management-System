@@ -5,7 +5,7 @@ import java.util.Scanner;
 
 public class Klijent {
 
-    private static String menu = "1. Kreiranje grada\n" +
+    private static String menu = "\n1. Kreiranje grada\n" +
         "2. Kreiranje korisnika\n" + 
         "3. Promena email adrese za korisnika\n"+ 
         "4. Promena mesta za korisnika\n"+ 
@@ -131,9 +131,9 @@ public class Klijent {
 //                case BRISANJE_OCENE:
 //                    Podsistem2Handler.zahtev16Handler();
 //                    break;
-//                case BRISANJE_SNIMKA:
-//                    Podsistem2Handler.zahtev17Handler();
-//                    break;
+                case BRISANJE_SNIMKA:
+                    Podsistem2Handler.zahtev17Handler(curKorisnikId);
+                    break;
                 case DOHVATI_MESTA:
                     Podsistem1Handler.zahtev18Handler();
                     break;

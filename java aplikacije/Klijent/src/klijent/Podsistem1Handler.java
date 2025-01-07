@@ -149,7 +149,6 @@ public class Podsistem1Handler {
         
         unesiParametar("ime korisnika", "imeKorisnika");   
         unesiParametar("sifru", "sifra");
-        
         String resp = sendHttpRequest(URL, "GET");
         return Integer.parseInt(resp);
     }

@@ -157,16 +157,18 @@ public class Podsistem2Handler {
         sendHttpRequest(URL, "POST");
     }
     
-//    public static void zahtev17Handler() {
-//        URL = URL_START;
-//        URL = URL + "/zahtev17";
-//        URL = URL + "?";
-//        count = 0;
-//        
-//        unesiParametar("naziv audio snimka", "naziv");
-//        unesiParametar("ime korisnika koji je vlasnik snimka", "imeKorisnika");
-//        sendHttpRequest(URL, "GET");
-//    }
+    // curKorisnikId - trenutno ulogovani korisnik
+    public static void zahtev17Handler(Integer curKorisnikId) {
+        URL = URL_START;
+        URL = URL + "/zahtev17";
+        URL = URL + "?";
+        count = 0;
+        
+        unesiParametar("naziv audio snimka", "naziv");
+        unesiParametar("ime korisnika koji je vlasnik snimka", "imeKorisnika");
+        dodajNaURL("curKorisnikId", curKorisnikId.toString());
+        sendHttpRequest(URL, "POST");
+    }
     
     public static void zahtev20Handler() {
         URL = URL_START;
