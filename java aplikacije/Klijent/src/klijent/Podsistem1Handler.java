@@ -101,24 +101,24 @@ public class Podsistem1Handler {
         sendHttpRequest(URL, "POST");
     }
     
-    public static void zahtev3Handler() {
+    public static void zahtev3Handler(Integer curKorisnikId) {
         URL = URL_START;
         URL = URL + "/zahtev3";
         URL = URL + "?";
         count = 0;
         
-        unesiParametar("ime korisnika", "imeKorisnika");
+        dodajNaURL("curKorisnikId", curKorisnikId.toString());
         unesiParametar("novu email adresu", "email");
         sendHttpRequest(URL, "POST");
     }
     
-    public static void zahtev4Handler() {
+    public static void zahtev4Handler(Integer curKorisnikId) {
         URL = URL_START;
         URL = URL + "/zahtev4";
         URL = URL + "?";
         count = 0;
         
-        unesiParametar("ime korisnika", "imeKorisnika");
+        dodajNaURL("curKorisnikId", curKorisnikId.toString());
         unesiParametar("naziv novog mesta korisnika", "mesto");
         sendHttpRequest(URL, "POST");
     }

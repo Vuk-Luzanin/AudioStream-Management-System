@@ -89,29 +89,29 @@ public class Main {
     }
     
     //zahtev 3
-    private static Reply updateEmail(String imeKorisnika, String email)
+    private static Reply updateEmail(int curKorisnikId, String email)
     {
-        List<Korisnik> korisnici = em.createNamedQuery("Korisnik.findByIme").setParameter("ime", imeKorisnika).getResultList();
-        if(korisnici.isEmpty())
-            return new Reply(-1, "NE POSTOJI KORISNIK: " + imeKorisnika, null);
-        Korisnik korisnik = korisnici.get(0);
+        Korisnik korisnik = em.createNamedQuery("Korisnik.findByIdKorisnik", Korisnik.class)
+                .setParameter("idKorisnik", curKorisnikId)
+                .getSingleResult();
 
         em.getTransaction().begin();
         korisnik.setEmail(email);
         em.flush();
         em.getTransaction().commit();
-        return new Reply(0, "USPESNO POSTAVLJENA EMAIL ADRESA KORISNIKU: " + imeKorisnika, null);  
+        return new Reply(0, "USPESNO POSTAVLJENA EMAIL ADRESA KORISNIKU: " + korisnik.getIme(), null);  
     }
     
     //zahtev 4
-    private static Reply updateMesto(String imeKorisnika, String nazivMesta)
+    private static Reply updateMesto(int curKorisnikId, String nazivMesta)
     {
-        List<Korisnik> korisnici = em.createNamedQuery("Korisnik.findByIme").setParameter("ime", imeKorisnika).getResultList();
-        if(korisnici.isEmpty())
-            return new Reply(-1, "NE POSTOJI KORISNIK: " + imeKorisnika, null);
-        Korisnik korisnik = korisnici.get(0);
+        Korisnik korisnik = em.createNamedQuery("Korisnik.findByIdKorisnik", Korisnik.class)
+                .setParameter("idKorisnik", curKorisnikId)
+                .getSingleResult();
         
-        List<Mesto> mesta = em.createNamedQuery("Mesto.findByNaziv").setParameter("naziv", nazivMesta).getResultList();
+        List<Mesto> mesta = em.createNamedQuery("Mesto.findByNaziv")
+                .setParameter("naziv", nazivMesta)
+                .getResultList();
         if(mesta.isEmpty())
             return new Reply(-1, "NE POSTOJI MESTO: " + nazivMesta, null);
         Mesto m = mesta.get(0);
@@ -120,7 +120,7 @@ public class Main {
         korisnik.setIdMesto(m);
         em.flush();
         em.getTransaction().commit();
-        return new Reply(0, "USPESNO POSTAVLJENO MESTO KORISNIKU: " + imeKorisnika, null);  
+        return new Reply(0, "USPESNO POSTAVLJENO MESTO KORISNIKU: " + korisnik.getIme(), null);  
     }
     
     //zahtev 18
@@ -203,9 +203,9 @@ public class Main {
                     case PROMENA_EMAIL_ADRESE:
                         System.out.println("Zahtev od servera za promenu email adrese korisnika...");
                         params = request.getParametri();
-                        imeKorisnika    = (String) params.get(0);
+                        int curKorisnikId    = (int) params.get(0);
                         email           = (String) params.get(1);
-                        reply = updateEmail(imeKorisnika, email);
+                        reply = updateEmail(curKorisnikId, email);
                         objMsgSend.setObject(reply);
                         System.out.println("Obradjen zahtev...");
                         break;
@@ -213,9 +213,9 @@ public class Main {
                     case PROMENA_MESTA:
                         System.out.println("Zahtev od servera za promenu mesta korisnika...");
                         params = request.getParametri();
-                        imeKorisnika    = (String) params.get(0);
+                        curKorisnikId    = (int) params.get(0);
                         nazivMesta      = (String) params.get(1);
-                        reply = updateMesto(imeKorisnika, nazivMesta);
+                        reply = updateMesto(curKorisnikId, nazivMesta);
                         objMsgSend.setObject(reply);
                         System.out.println("Obradjen zahtev...");
                         break;

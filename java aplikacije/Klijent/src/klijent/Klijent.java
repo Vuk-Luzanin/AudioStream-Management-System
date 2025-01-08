@@ -90,10 +90,10 @@ public class Klijent {
                     Podsistem1Handler.zahtev2Handler();
                     break;
                 case PROMENA_EMAIL_ADRESE:
-                    Podsistem1Handler.zahtev3Handler();
+                    Podsistem1Handler.zahtev3Handler(curKorisnikId);
                     break;
                 case PROMENA_MESTA:
-                    Podsistem1Handler.zahtev4Handler();
+                    Podsistem1Handler.zahtev4Handler(curKorisnikId);
                     break;
                 case KREIRAJ_KATEGORIJU:
                     Podsistem2Handler.zahtev5Handler();

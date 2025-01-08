@@ -258,7 +258,7 @@ public class Main {
                         break;
                         
                     case DOHVATI_PRETPLATE:
-                        System.out.println("Zahtev od servera za dohvatanje svih pretplata...");
+                        System.out.println("Zahtev od servera za dohvatanje svih pretplata za ulogovanog korisnika...");
                         curKorisnikId = (int) request.getParametri().get(0);
                         reply = dohvatiPretplateZaKorisnika(curKorisnikId);
                         objMsgSend.setObject(reply);
