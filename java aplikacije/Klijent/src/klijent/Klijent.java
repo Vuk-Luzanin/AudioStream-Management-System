@@ -149,12 +149,12 @@ public class Klijent {
                 case DOHVATI_KATEGORIJE_SNIMKA:
                     Podsistem2Handler.zahtev22Handler();
                     break;
-//                case DOHVATI_PAKETE:
-//                    Podsistem3Handler.zahtev23Handler();
-//                    break;
-//                case DOHVATI_PRETPLATE:
-//                    Podsistem3Handler.zahtev24Handler();
-//                    break;
+                case DOHVATI_PAKETE:
+                    Podsistem3Handler.zahtev23Handler();
+                    break;
+                case DOHVATI_PRETPLATE:
+                    Podsistem3Handler.zahtev24Handler(curKorisnikId);
+                    break;
 //                case DOHVATI_SLUSANJA_SNIMKA:
 //                    Podsistem3Handler.zahtev25Handler();
 //                    break;

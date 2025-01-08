@@ -142,4 +142,23 @@ public class Podsistem3Handler {
         dodajNaURL("curKorisnikId", curKorisnikId.toString());
         sendHttpRequest(URL, "POST");
     }
+    
+    public static void zahtev23Handler() {
+        URL = URL_START;
+        URL = URL + "/zahtev23";
+//        URL = URL + "?";
+        count = 0;
+        
+        sendHttpRequest(URL, "GET");
+    }
+    
+    public static void zahtev24Handler(Integer curKorisnikId) {
+        URL = URL_START;
+        URL = URL + "/zahtev24";
+        URL = URL + "?";
+        count = 0;
+        
+        dodajNaURL("curKorisnikId", curKorisnikId.toString());
+        sendHttpRequest(URL, "GET");
+    }
 }

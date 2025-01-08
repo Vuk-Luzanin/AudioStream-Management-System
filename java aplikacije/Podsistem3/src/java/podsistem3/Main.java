@@ -9,6 +9,7 @@ import java.net.URLDecoder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -27,6 +28,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import komunikacija.Reply;
 import komunikacija.Request;
+import podsistem1Entities.Korisnik;
 
 
 public class Main {
@@ -155,15 +157,44 @@ public class Main {
             .setParameter("datumIsteka", datumIsteka)
             .getResultList();
 
-    if (!aktivnePretplate.isEmpty()) {
-        return new Reply(-1, "KORISNIK VEC IMA VAZECU PRETPLATU", null);
-    }
+        if (!aktivnePretplate.isEmpty()) {
+            return new Reply(-1, "KORISNIK VEC IMA VAZECU PRETPLATU", null);
+        }
         
         Pretplata pretplata = new Pretplata();
         pretplata.setIdKorisnik(curKorisnikId); pretplata.setCena(p.getCena());
         pretplata.setDatumPocetka(datumPostavljanja); pretplata.setIdPaket(p);
         persistObject(pretplata);
         return new Reply(0, "USPESNO KREIRANA PRETPLATA: " + nazivPaketa, null);
+    }
+    
+    //zahtev 23
+    private static Reply dohvatiPakete()
+    {
+        List<Paket> paketi =  em.createNamedQuery("Paket.findAll").getResultList();
+        for(Paket p : paketi)
+            p.setPretplataList(null);
+        return new Reply(0, "DOHVACENI SVI PAKETI", paketi);
+    }
+    
+    //zahtev 24
+    private static Reply dohvatiPretplateZaKorisnika(int curKorisnikId)
+    {
+        // da li dati korisnik ima audio snimak sa tim imenom
+        // Pretplata.findByIDKor
+        List<Pretplata> pretplate = em.createNamedQuery("Pretplata.findByIdKorisnik")
+                .setParameter("idKorisnik", curKorisnikId)
+                .getResultList();
+        if (pretplate.isEmpty()) 
+            return new Reply(-1, "KORISNIK NEMA PRETPLATE", null);
+        
+        // return value
+        List<Pretplata> pretplataListReturn = new ArrayList<>();
+        for(Pretplata p : pretplate)
+            p.getIdPaket().setPretplataList(null);
+        
+        
+        return new Reply(0, "DOHVACENE SVE PRETPLATE", pretplate);
     }
     
     
@@ -215,6 +246,21 @@ public class Main {
                         String datum = (String) request.getParametri().get(1);
                         int curKorisnikId = (int) request.getParametri().get(2);
                         reply = kreirajPretplatu(nazivPaketa, datum, curKorisnikId);
+                        objMsgSend.setObject(reply);
+                        System.out.println("Obradjen zahtev...");
+                        break;
+                        
+                    case DOHVATI_PAKETE:
+                        System.out.println("Zahtev od servera za dohvatanje svih paketa...");
+                        reply = dohvatiPakete();
+                        objMsgSend.setObject(reply);
+                        System.out.println("Obradjen zahtev...");
+                        break;
+                        
+                    case DOHVATI_PRETPLATE:
+                        System.out.println("Zahtev od servera za dohvatanje svih pretplata...");
+                        curKorisnikId = (int) request.getParametri().get(0);
+                        reply = dohvatiPretplateZaKorisnika(curKorisnikId);
                         objMsgSend.setObject(reply);
                         System.out.println("Obradjen zahtev...");
                         break;

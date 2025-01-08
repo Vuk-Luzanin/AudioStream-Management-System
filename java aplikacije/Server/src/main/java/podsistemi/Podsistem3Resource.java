@@ -13,6 +13,7 @@ import javax.jms.JMSException;
 import javax.jms.JMSProducer;
 import javax.jms.ObjectMessage;
 import javax.jms.Topic;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.QueryParam;
@@ -125,6 +126,25 @@ public class Podsistem3Resource {
         request.setIdZahteva(KREIRAJ_PRETPLATU);
         request.dodajParametar(nazivPaketa);
         request.dodajParametar(datum);
+        request.dodajParametar(curKorisnikId);
+        return sendRequest(request);
+    }
+    
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)       // jer radi sa JMS koji nema transakcije
+    @GET
+    @Path("/zahtev23")
+    public Response dohvatiPakete() {
+        Request request = new Request();
+        request.setIdZahteva(DOHVATI_PAKETE);
+        return sendRequest(request);
+    }
+    
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)       // jer radi sa JMS koji nema transakcije
+    @GET
+    @Path("/zahtev24")
+    public Response dohvatiPretplateZaKorisnika(@QueryParam("curKorisnikId") int curKorisnikId) {
+        Request request = new Request();
+        request.setIdZahteva(DOHVATI_PRETPLATE);
         request.dodajParametar(curKorisnikId);
         return sendRequest(request);
     }

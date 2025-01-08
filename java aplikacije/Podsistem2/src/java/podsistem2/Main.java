@@ -22,6 +22,7 @@ import javax.jms.ObjectMessage;
 import javax.jms.Topic;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.NamedQuery;
 import javax.persistence.Persistence;
 import komunikacija.Reply;
 import komunikacija.Request;
@@ -172,7 +173,8 @@ public class Main {
         int idKorisnik = korisnik.getIdKorisnik();
         
         // da li dati korisnik ima audio snimak sa tim imenom
-        List<Audio> snimci = em.createNamedQuery("Audio.findByIDKorNaziv")
+        // Audio.findByIDKorNaziv
+        List<Audio> snimci = em.createQuery("SELECT a FROM Audio a WHERE a.naziv = :naziv and a.idKorisnik = :idKorisnik")
                 .setParameter("idKorisnik", idKorisnik)
                 .setParameter("naziv", naziv)
                 .getResultList();
@@ -255,7 +257,11 @@ public class Main {
         int idKorisnik = korisnik.getIdKorisnik();
         
         // da li dati korisnik ima audio snimak sa tim imenom
-        List<Audio> snimci = em.createNamedQuery("Audio.findByIDKorNaziv").setParameter("idKorisnik", idKorisnik).setParameter("naziv", naziv).getResultList();
+        // Audio.findByIDKorNaziv
+        List<Audio> snimci = em.createQuery("SELECT a FROM Audio a WHERE a.naziv = :naziv and a.idKorisnik = :idKorisnik")
+                .setParameter("idKorisnik", idKorisnik)
+                .setParameter("naziv", naziv)
+                .getResultList();
         if (snimci.isEmpty()) 
             return new Reply(-1, "KORISNIK NEMA AUDIO SNIMAK SA NAZIVOM: " + naziv, null);
         Audio a = snimci.get(0);
@@ -264,6 +270,7 @@ public class Main {
         "SELECT k FROM Kategorija k JOIN k.audioList a WHERE a.idAudio = :idAudio", Kategorija.class).setParameter("idAudio", a.getIdAudio()).getResultList();
         if (kategorije.isEmpty()) 
             return new Reply(-1, "NE POSTOJE KATEGORIJE ZA AUDIO SNIMAK: " + naziv, null);
+        
         for(Kategorija k : kategorije)
             k.setAudioList(null);
         return new Reply(-1, "DOHVACENE SVE KATEGORIJE ZA AUDIO SNIMAK: " + naziv, kategorije);
