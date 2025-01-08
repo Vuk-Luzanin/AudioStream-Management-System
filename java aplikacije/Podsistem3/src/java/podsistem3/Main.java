@@ -2,7 +2,15 @@
 package podsistem3;
 
 import entities.Paket;
+import entities.Pretplata;
+import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
+import java.net.URLDecoder;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.temporal.ChronoUnit;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -107,10 +115,54 @@ public class Main {
     }
     
     //zahtev 11
-    // curKorisnikId - TRENUTNO ULOGOVAN KORISNIK
+    // curKorisnikId - TRENUTNO ULOGOVAN KORISNIK -> sigurno postoji u sistemu
     private static Reply kreirajPretplatu(String nazivPaketa, String datum, int curKorisnikId)
     { 
-        // NASTAVITI
+        List<Paket> paketi = em.createNamedQuery("Paket.findByNaziv").setParameter("naziv", nazivPaketa).getResultList();
+        if(paketi.isEmpty())
+            return new Reply(-1, "NE POSTOJI PAKET: " + nazivPaketa, null);
+        Paket p = paketi.get(0);
+        
+        // Dekodiraj datum
+        String decodedDatum = null;
+        try {
+            decodedDatum = URLDecoder.decode(datum, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date datumPostavljanja = null;
+        try 
+        {
+            datumPostavljanja = dateFormat.parse(decodedDatum);
+        } catch (ParseException e) 
+        {
+            System.out.println("DATUM NIJE U ISPRAVNOM FORMATU: " + datum);
+        }
+        
+        //datumIsteka
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(datumPostavljanja); 
+        calendar.add(Calendar.MONTH, 1);    
+        Date datumIsteka = calendar.getTime();   
+        
+        // Proveri da li korisnik već ima važeću pretplatu
+        List<Pretplata> aktivnePretplate = em.createQuery(
+            "SELECT p FROM Pretplata p WHERE p.idKorisnik = :korisnikId AND :datum BETWEEN p.datumPocetka AND :datumIsteka",
+            Pretplata.class)
+            .setParameter("korisnikId", curKorisnikId)
+            .setParameter("datum", datumPostavljanja)
+            .setParameter("datumIsteka", datumIsteka)
+            .getResultList();
+
+    if (!aktivnePretplate.isEmpty()) {
+        return new Reply(-1, "KORISNIK VEC IMA VAZECU PRETPLATU", null);
+    }
+        
+        Pretplata pretplata = new Pretplata();
+        pretplata.setIdKorisnik(curKorisnikId); pretplata.setCena(p.getCena());
+        pretplata.setDatumPocetka(datumPostavljanja); pretplata.setIdPaket(p);
+        persistObject(pretplata);
         return new Reply(0, "USPESNO KREIRANA PRETPLATA: " + nazivPaketa, null);
     }
     
