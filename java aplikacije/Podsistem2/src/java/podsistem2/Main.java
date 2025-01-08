@@ -93,16 +93,18 @@ public class Main {
     }
     
     //zahtev 6
-    private static Reply kreirajAudio(String naziv, BigDecimal trajanje, String imeKorisnika, String datum)
+    private static Reply kreirajAudio(String naziv, BigDecimal trajanje, int curKorisnikId, String datum)
     {
-        List<Korisnik> korisnici = empodsistem1.createNamedQuery("Korisnik.findByIme").setParameter("ime", imeKorisnika).getResultList();
-        if(korisnici.isEmpty())
-            return new Reply(-1, "NE POSTOJI KORISNIK: " + imeKorisnika, null);
-        Korisnik korisnik = korisnici.get(0);
-        int idKorisnik = korisnik.getIdKorisnik();
+        Korisnik korisnik = empodsistem1.createNamedQuery("Korisnik.findByIdKorisnik", Korisnik.class)
+                .setParameter("idKorisnik", curKorisnikId)
+                .getSingleResult();
         
         // da li dati korisnik vec ima audio snimak sa tim imenom
-        List<Audio> snimci = em.createNamedQuery("Audio.findByIDKorNaziv").setParameter("idKorisnik", idKorisnik).setParameter("naziv", naziv).getResultList();
+        // Audio.findByIDKorNaziv
+        List<Audio> snimci = em.createQuery("SELECT a FROM Audio a WHERE a.naziv = :naziv and a.idKorisnik = :idKorisnik")
+                .setParameter("idKorisnik", curKorisnikId)
+                .setParameter("naziv", naziv)
+                .getResultList();
         if (!snimci.isEmpty()) 
             return new Reply(-1, "KORISNIK VEC IMA AUDIO SNIMAK SA NAZIVOM: " + naziv, null);
         
@@ -133,23 +135,25 @@ public class Main {
         Audio a = new Audio();
         a.setNaziv(naziv);
         a.setTrajanje(trajanje);
-        a.setIdKorisnik(idKorisnik);
+        a.setIdKorisnik(curKorisnikId);
         a.setDatumPostavljanja(datumPostavljanja);
         persistObject(a);
         return new Reply(0, "USPESNO KREIRAN AUDIO SNIMAK: " + naziv, null);
     }
     
     //zahtev 7
-    private static Reply promeniNaziv(String naziv, String imeKorisnika, String noviNaziv)
+    private static Reply promeniNaziv(String naziv, int curKorisnikId, String noviNaziv)
     {
-        List<Korisnik> korisnici = empodsistem1.createNamedQuery("Korisnik.findByIme").setParameter("ime", imeKorisnika).getResultList();
-        if(korisnici.isEmpty())
-            return new Reply(-1, "NE POSTOJI KORISNIK: " + imeKorisnika, null);
-        Korisnik korisnik = korisnici.get(0);
-        int idKorisnik = korisnik.getIdKorisnik();
+        Korisnik korisnik = empodsistem1.createNamedQuery("Korisnik.findByIdKorisnik", Korisnik.class)
+                .setParameter("idKorisnik", curKorisnikId)
+                .getSingleResult();
         
         // da li dati korisnik ima audio snimak sa tim imenom
-        List<Audio> snimci = em.createNamedQuery("Audio.findByIDKorNaziv").setParameter("idKorisnik", idKorisnik).setParameter("naziv", naziv).getResultList();
+        // Audio.findByIDKorNaziv
+        List<Audio> snimci = em.createQuery("SELECT a FROM Audio a WHERE a.naziv = :naziv and a.idKorisnik = :idKorisnik")
+                .setParameter("idKorisnik", curKorisnikId)
+                .setParameter("naziv", naziv)
+                .getResultList();
         if (snimci.isEmpty()) 
             return new Reply(-1, "KORISNIK NEMA AUDIO SNIMAK SA NAZIVOM: " + naziv, null);
         Audio a = snimci.get(0);
@@ -162,20 +166,16 @@ public class Main {
     }
     
     //zahtev 8
-    private static Reply dodajKategorijuSnimku(String naziv, String imeKorisnika, String nazivKategorije)
+    private static Reply dodajKategorijuSnimku(String naziv, int curKorisnikId, String nazivKategorije)
     {
-        List<Korisnik> korisnici = empodsistem1.createNamedQuery("Korisnik.findByIme")
-                .setParameter("ime", imeKorisnika)
-                .getResultList();
-        if(korisnici.isEmpty())
-            return new Reply(-1, "NE POSTOJI KORISNIK: " + imeKorisnika, null);
-        Korisnik korisnik = korisnici.get(0);
-        int idKorisnik = korisnik.getIdKorisnik();
+        Korisnik korisnik = empodsistem1.createNamedQuery("Korisnik.findByIdKorisnik", Korisnik.class)
+                .setParameter("idKorisnik", curKorisnikId)
+                .getSingleResult();
         
         // da li dati korisnik ima audio snimak sa tim imenom
         // Audio.findByIDKorNaziv
         List<Audio> snimci = em.createQuery("SELECT a FROM Audio a WHERE a.naziv = :naziv and a.idKorisnik = :idKorisnik")
-                .setParameter("idKorisnik", idKorisnik)
+                .setParameter("idKorisnik", curKorisnikId)
                 .setParameter("naziv", naziv)
                 .getResultList();
         if (snimci.isEmpty()) 
@@ -203,21 +203,15 @@ public class Main {
     }
     
     //zahtev 17
-    private static Reply obrisiSnimak(String naziv, String imeKorisnika, int curKorisnikId)
+    private static Reply obrisiSnimak(String naziv, int curKorisnikId)
     {
-        List<Korisnik> korisnici = empodsistem1.createNamedQuery("Korisnik.findByIme")
-                .setParameter("ime", imeKorisnika)
-                .getResultList();
-        if(korisnici.isEmpty())
-            return new Reply(-1, "NE POSTOJI KORISNIK: " + imeKorisnika, null);
-        Korisnik korisnik = korisnici.get(0);               // korisnik koji zeli da obrise snimak
+        Korisnik korisnik = empodsistem1.createNamedQuery("Korisnik.findByIdKorisnik", Korisnik.class)
+                .setParameter("idKorisnik", curKorisnikId)
+                .getSingleResult();               // korisnik koji zeli da obrise snimak - trentno ulogovan
         
-        if (korisnik.getIdKorisnik() != curKorisnikId)
-        {
-            return new Reply(-1, "MORATE BITI ULOGOVAN KAO " + imeKorisnika + " DA BISTE BRISALI NJEGOVE SNIMKE", null);
-        }
-        
-        List<Audio> snimci = em.createNamedQuery("Audio.findByIDKorNaziv")      // snimak ulogovanog korisnika sa zadatim nazivom
+        // da li ulogovani korisnik ima audio snimak sa tim imenom
+        // Audio.findByIDKorNaziv
+        List<Audio> snimci = em.createQuery("SELECT a FROM Audio a WHERE a.naziv = :naziv and a.idKorisnik = :idKorisnik")
                 .setParameter("idKorisnik", curKorisnikId)
                 .setParameter("naziv", naziv)
                 .getResultList();
@@ -226,7 +220,7 @@ public class Main {
         Audio a = snimci.get(0);
         
         removeObject(a);
-        return new Reply(0, "USPESNO OBRISAM SNIMAK: " + naziv + ", VLASNIKA: " + imeKorisnika, null);
+        return new Reply(0, "USPESNO OBRISAM SNIMAK: " + naziv + ", VLASNIKA: " + korisnik.getIme(), null);
     }
   
     //zahtev 20
@@ -243,7 +237,12 @@ public class Main {
     {
         List<Audio> snimci =  em.createNamedQuery("Audio.findAll").getResultList();
         for(Audio a : snimci)
-            a.setKategorijaList(null);
+        {
+            for(Kategorija k : a.getKategorijaList())
+            {
+                k.setAudioList(null);
+            }
+        }
         return snimci;
     }
     
@@ -312,9 +311,9 @@ public class Main {
                         System.out.println("Zahtev od servera za kreiranje audio snimka...");
                         String naziv = (String) request.getParametri().get(0);
                         BigDecimal trajanje = new BigDecimal((String) request.getParametri().get(1));
-                        String imeKorisnika = (String) request.getParametri().get(2);
+                        int curKorisnikId = (int) request.getParametri().get(2);
                         String datum = (String) request.getParametri().get(3);
-                        reply = kreirajAudio(naziv, trajanje, imeKorisnika, datum);
+                        reply = kreirajAudio(naziv, trajanje, curKorisnikId, datum);
                         objMsgSend.setObject(reply);
                         System.out.println("Obradjen zahtev...");
                         break;
@@ -322,9 +321,9 @@ public class Main {
                     case PROMENA_NAZIVA_SNIMKA:
                         System.out.println("Zahtev od servera za promenu naziva audio snimka...");
                         naziv = (String) request.getParametri().get(0);
-                        imeKorisnika = (String) request.getParametri().get(1);
+                        curKorisnikId = (int) request.getParametri().get(1);
                         String noviNaziv = (String) request.getParametri().get(2);
-                        reply = promeniNaziv(naziv, imeKorisnika, noviNaziv);
+                        reply = promeniNaziv(naziv, curKorisnikId, noviNaziv);
                         objMsgSend.setObject(reply);
                         System.out.println("Obradjen zahtev...");
                         break;
@@ -332,9 +331,9 @@ public class Main {
                     case DODAJ_KATEGORIJU_SNIMKU:
                         System.out.println("Zahtev od servera za dodavanje kategorije snimku...");
                         naziv = (String) request.getParametri().get(0);
-                        imeKorisnika = (String) request.getParametri().get(1);
+                        curKorisnikId = (int) request.getParametri().get(1);
                         nazivKategorije = (String) request.getParametri().get(2);
-                        reply = dodajKategorijuSnimku(naziv, imeKorisnika, nazivKategorije);
+                        reply = dodajKategorijuSnimku(naziv, curKorisnikId, nazivKategorije);
                         objMsgSend.setObject(reply);
                         System.out.println("Obradjen zahtev...");
                         break;
@@ -342,9 +341,8 @@ public class Main {
                     case BRISANJE_SNIMKA:
                         System.out.println("Zahtev od servera za brisanje audio snimka od strane korisnika koji ga je postavio...");
                         naziv = (String) request.getParametri().get(0);
-                        imeKorisnika = (String) request.getParametri().get(1);
-                        int curKorisnikId = (int) request.getParametri().get(2);
-                        reply = obrisiSnimak(naziv, imeKorisnika, curKorisnikId);
+                        curKorisnikId = (int) request.getParametri().get(1);
+                        reply = obrisiSnimak(naziv, curKorisnikId);
                         objMsgSend.setObject(reply);
                         System.out.println("Obradjen zahtev...");
                         break;
@@ -368,7 +366,7 @@ public class Main {
                     case DOHVATI_KATEGORIJE_SNIMKA:
                         System.out.println("Zahtev od servera za dohvatanje svih kategorija za odredjeni audio snimak...");
                         naziv = (String) request.getParametri().get(0);
-                        imeKorisnika = (String) request.getParametri().get(1);
+                        String imeKorisnika = (String) request.getParametri().get(1);
                         reply = dohvatiKategorijeZaSnimak(naziv, imeKorisnika);
                         objMsgSend.setObject(reply);
                         System.out.println("Obradjen zahtev...");

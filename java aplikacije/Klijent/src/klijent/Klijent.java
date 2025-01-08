@@ -72,9 +72,11 @@ public class Klijent {
             while(curKorisnikId == -1)
             {
                 curKorisnikId = Podsistem1Handler.zahtevLogin();
-                if(curKorisnikId == -1) System.out.println("NEUSPESNO LOGOVANJE");
+                if(curKorisnikId == -1) 
+                    System.out.println("NEUSPESNO LOGOVANJE");
+                else
+                    System.out.println("USPESNO STE SE ULOGOVALI");
             }
-            System.out.println("USPESNO STE SE ULOGOVALI");
             
             System.out.println(menu);
             System.out.println("Izaberite jedan od zahteva unosom broja zahteva: ");
@@ -99,13 +101,13 @@ public class Klijent {
                     Podsistem2Handler.zahtev5Handler();
                     break;
                 case KREIRAJ_AUDIO_SNIMAK:
-                    Podsistem2Handler.zahtev6Handler();
+                    Podsistem2Handler.zahtev6Handler(curKorisnikId);
                     break;
                 case PROMENA_NAZIVA_SNIMKA:
-                    Podsistem2Handler.zahtev7Handler();
+                    Podsistem2Handler.zahtev7Handler(curKorisnikId);
                     break;
                 case DODAJ_KATEGORIJU_SNIMKU:
-                    Podsistem2Handler.zahtev8Handler();
+                    Podsistem2Handler.zahtev8Handler(curKorisnikId);
                     break;
                 case KREIRAJ_PAKET:
                     Podsistem3Handler.zahtev9Handler();

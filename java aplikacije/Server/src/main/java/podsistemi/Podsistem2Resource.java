@@ -106,12 +106,12 @@ public class Podsistem2Resource {
     @POST
     @Path("/zahtev6")
     public Response kreirajAudio(@QueryParam("naziv") String naziv, @QueryParam("trajanje") String trajanje,
-            @QueryParam("imeKorisnika") String imeKorisnika, @QueryParam("datum") String datum) {
+            @QueryParam("curKorisnikId") int curKorisnikId, @QueryParam("datum") String datum) {
         Request request = new Request();
         request.setIdZahteva(KREIRAJ_AUDIO_SNIMAK);
         request.dodajParametar(naziv);
         request.dodajParametar(trajanje);
-        request.dodajParametar(imeKorisnika);
+        request.dodajParametar(curKorisnikId);
         request.dodajParametar(datum);
         return sendRequest(request);
     }
@@ -119,12 +119,12 @@ public class Podsistem2Resource {
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)       // jer radi sa JMS koji nema transakcije
     @POST
     @Path("/zahtev7")
-    public Response promeniNaziv(@QueryParam("naziv") String naziv, @QueryParam("imeKorisnika") String imeKorisnika,
+    public Response promeniNaziv(@QueryParam("naziv") String naziv, @QueryParam("curKorisnikId") int curKorisnikId,
             @QueryParam("noviNaziv") String noviNaziv) {
         Request request = new Request();
         request.setIdZahteva(PROMENA_NAZIVA_SNIMKA);
         request.dodajParametar(naziv);
-        request.dodajParametar(imeKorisnika);
+        request.dodajParametar(curKorisnikId);
         request.dodajParametar(noviNaziv);
         return sendRequest(request);
     }
@@ -132,12 +132,12 @@ public class Podsistem2Resource {
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)       // jer radi sa JMS koji nema transakcije
     @POST
     @Path("/zahtev8")
-    public Response dodajKategorijuSnimku(@QueryParam("naziv") String naziv, @QueryParam("imeKorisnika") String imeKorisnika,
+    public Response dodajKategorijuSnimku(@QueryParam("naziv") String naziv, @QueryParam("curKorisnikId") int curKorisnikId,
             @QueryParam("nazivKategorije") String nazivKategorije) {
         Request request = new Request();
         request.setIdZahteva(DODAJ_KATEGORIJU_SNIMKU);
         request.dodajParametar(naziv);
-        request.dodajParametar(imeKorisnika);
+        request.dodajParametar(curKorisnikId);
         request.dodajParametar(nazivKategorije);
         return sendRequest(request);
     }
@@ -145,12 +145,10 @@ public class Podsistem2Resource {
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)       // jer radi sa JMS koji nema transakcije
     @POST
     @Path("/zahtev17")
-    public Response obrisiSnimak(@QueryParam("naziv") String naziv, @QueryParam("imeKorisnika") String imeKorisnika,
-            @QueryParam("curKorisnikId") int curKorisnikId) {
+    public Response obrisiSnimak(@QueryParam("naziv") String naziv, @QueryParam("curKorisnikId") int curKorisnikId) {
         Request request = new Request();
         request.setIdZahteva(BRISANJE_SNIMKA);
         request.dodajParametar(naziv);
-        request.dodajParametar(imeKorisnika);
         request.dodajParametar(curKorisnikId);
         return sendRequest(request);
     }

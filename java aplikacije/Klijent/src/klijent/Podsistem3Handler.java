@@ -14,8 +14,6 @@ import java.util.Date;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import static klijent.Podsistem2Handler.sendHttpRequest;
-import static klijent.Podsistem2Handler.unesiParametar;
 
 
 public class Podsistem3Handler {

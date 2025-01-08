@@ -90,7 +90,7 @@ public class Podsistem2Handler {
         sendHttpRequest(URL, "POST");
     }
     
-    public static void zahtev6Handler() {
+    public static void zahtev6Handler(Integer curKorisnikId) {
         URL = URL_START;
         URL = URL + "/zahtev6";
         URL = URL + "?";
@@ -98,7 +98,7 @@ public class Podsistem2Handler {
         
         unesiParametar("naziv audio snimka", "naziv");
         unesiParametar("trajanje audio snimka u minutima (primer: 3.4)", "trajanje");
-        unesiParametar("ime korisnika koji je vlasnik snimka", "imeKorisnika");
+        dodajNaURL("curKorisnikId", curKorisnikId.toString());
         
         System.out.print("Unesite datum postavljanja videa (format: yyyy-MM-dd HH:mm:ss): ");
         Scanner in = new Scanner(System.in);
@@ -133,26 +133,26 @@ public class Podsistem2Handler {
     }
     
     // one REST API request
-    public static void zahtev7Handler() {
+    public static void zahtev7Handler(Integer curKorisnikId) {
         URL = URL_START;
         URL = URL + "/zahtev7";
         URL = URL + "?";
         count = 0;
         
         unesiParametar("naziv audio snimka", "naziv");
-        unesiParametar("ime korisnika koji je vlasnik snimka", "imeKorisnika");
+        dodajNaURL("curKorisnikId", curKorisnikId.toString());
         unesiParametar("NOVI naziv audio snimka", "noviNaziv");
         sendHttpRequest(URL, "POST");
     }
     
-    public static void zahtev8Handler() {
+    public static void zahtev8Handler(Integer curKorisnikId) {
         URL = URL_START;
         URL = URL + "/zahtev8";
         URL = URL + "?";
         count = 0;
         
         unesiParametar("naziv audio snimka", "naziv");
-        unesiParametar("ime korisnika koji je vlasnik snimka", "imeKorisnika");
+        dodajNaURL("curKorisnikId", curKorisnikId.toString());
         unesiParametar("naziv kategorije", "nazivKategorije");
         sendHttpRequest(URL, "POST");
     }
@@ -165,7 +165,6 @@ public class Podsistem2Handler {
         count = 0;
         
         unesiParametar("naziv audio snimka", "naziv");
-        unesiParametar("ime korisnika koji je vlasnik snimka", "imeKorisnika");
         dodajNaURL("curKorisnikId", curKorisnikId.toString());
         sendHttpRequest(URL, "POST");
     }
@@ -188,6 +187,7 @@ public class Podsistem2Handler {
         sendHttpRequest(URL, "GET");
     }
     
+    // moze dohvatiti i ulogovani korisnik koji nije vlasnik snimka
     public static void zahtev22Handler() {
         URL = URL_START;
         URL = URL + "/zahtev22";
