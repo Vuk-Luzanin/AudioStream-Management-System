@@ -125,9 +125,9 @@ public class Klijent {
 //                case DODAJ_OMILJENI_SNIMAK:
 //                    Podsistem3Handler.zahtev13Handler();
 //                    break;
-//                case KREIRAJ_OCENU:
-//                    Podsistem3Handler.zahtev14Handler();
-//                    break;
+                case KREIRAJ_OCENU:
+                    Podsistem3Handler.zahtev14Handler(curKorisnikId);
+                    break;
 //                case PROMENA_OCENE:
 //                    Podsistem3Handler.zahtev15Handler();
 //                    break;
