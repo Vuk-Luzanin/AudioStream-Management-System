@@ -192,4 +192,15 @@ public class Podsistem3Resource {
         request.dodajParametar(imeVlasnika);
         return sendRequest(request);
     }
+    
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)       // jer radi sa JMS koji nema transakcije
+    @GET
+    @Path("/zahtev26")
+    public Response dohvatiOceneZaSnimak(@QueryParam("nazivSnimka") String nazivSnimka, @QueryParam("imeVlasnika") String imeVlasnika) {
+        Request request = new Request();
+        request.setIdZahteva(DOHVATI_OCENE_SNIMKA);
+        request.dodajParametar(nazivSnimka);
+        request.dodajParametar(imeVlasnika);
+        return sendRequest(request);
+    }
 }

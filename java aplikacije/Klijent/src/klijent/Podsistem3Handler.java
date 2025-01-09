@@ -254,4 +254,15 @@ public class Podsistem3Handler {
         unesiParametar("ime korisnika koji je vlasnik snimka", "imeVlasnika");
         sendHttpRequest(URL, "GET");
     }
+    
+    public static void zahtev26Handler() {
+        URL = URL_START;
+        URL = URL + "/zahtev26";
+        URL = URL + "?";
+        count = 0;
+        
+        unesiParametar("naziv audio snimka", "nazivSnimka");
+        unesiParametar("ime korisnika koji je vlasnik snimka", "imeVlasnika");
+        sendHttpRequest(URL, "GET");
+    }
 }

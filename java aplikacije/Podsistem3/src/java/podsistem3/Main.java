@@ -316,9 +316,36 @@ public class Main {
                 .setParameter("idAudio", a.getIdAudio())
                 .getResultList();
         if (slusanja.isEmpty()) 
-            return new Reply(-1, "AUDIO NEMA NIJEDNO SLUSANJE", null);
+            return new Reply(-1, "AUDIO SNIMAK NEMA NIJEDNO SLUSANJE", null);
 
         return new Reply(0, "DOHVACENA SVA SLUSANJA ZA SNIMAK: " + nazivSnimka + ", VLASNIKA: " + imeVlasnika, slusanja);
+    }
+    
+    //zahtev 26
+    private static Reply dohvatiOceneZaSnimak(String nazivSnimka, String imeVlasnika)
+    {
+        List<Korisnik> vlasnici = empodsistem1.createNamedQuery("Korisnik.findByIme").setParameter("ime", imeVlasnika).getResultList();
+        if(vlasnici.isEmpty())
+            return new Reply(-1, "NE POSTOJI VLASNIK SNIMKA: " + imeVlasnika, null);
+        Korisnik vlasnik = vlasnici.get(0);
+        
+        // da li dati vlasnik ima audio snimak sa tim imenom
+        // Audio.findByIDKorNaziv
+        List<Audio> snimci = empodsistem2.createQuery("SELECT a FROM Audio a WHERE a.naziv = :naziv and a.idKorisnik = :idKorisnik")
+                .setParameter("idKorisnik", vlasnik.getIdKorisnik())
+                .setParameter("naziv", nazivSnimka)
+                .getResultList();
+        if (snimci.isEmpty()) 
+            return new Reply(-1, "ZADATI VLASNIK NEMA AUDIO SNIMAK SA NAZIVOM: " + nazivSnimka, null);
+        Audio a = snimci.get(0);
+        
+        List<Ocena> ocene = em.createNamedQuery("Ocena.findByIdAudio")
+                .setParameter("idAudio", a.getIdAudio())
+                .getResultList();
+        if (ocene.isEmpty()) 
+            return new Reply(-1, "AUDIO NEMA NIJEDNU OCENU", null);
+
+        return new Reply(0, "DOHVACENE SVE OCENE ZA SNIMAK: " + nazivSnimka + ", VLASNIKA: " + imeVlasnika, ocene);
     }
     
     
@@ -421,6 +448,15 @@ public class Main {
                         nazivSnimka = (String) request.getParametri().get(0);
                         imeVlasnika = (String) request.getParametri().get(1);
                         reply = dohvatiSlusanjaZaSnimak(nazivSnimka, imeVlasnika);
+                        objMsgSend.setObject(reply);
+                        System.out.println("Obradjen zahtev...");
+                        break;
+                        
+                    case DOHVATI_OCENE_SNIMKA:
+                        System.out.println("Zahtev od servera za dohvatanje svih ocena za zadati audio snimak...");
+                        nazivSnimka = (String) request.getParametri().get(0);
+                        imeVlasnika = (String) request.getParametri().get(1);
+                        reply = dohvatiOceneZaSnimak(nazivSnimka, imeVlasnika);
                         objMsgSend.setObject(reply);
                         System.out.println("Obradjen zahtev...");
                         break;
