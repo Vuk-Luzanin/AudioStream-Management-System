@@ -319,6 +319,38 @@ public class Main {
         return new Reply(0, "USPESNO PROMENJENA OCENA SNIMKU: " + nazivSnimka, null);
     }
     
+    //zahtev 16
+    // curKorisnikId - TRENUTNO ULOGOVAN KORISNIK -> sigurno postoji u sistemu
+    private static Reply obrisiOcenu(int curKorisnikId, String nazivSnimka, String imeVlasnika)
+    { 
+       List<Korisnik> vlasnici = empodsistem1.createNamedQuery("Korisnik.findByIme").setParameter("ime", imeVlasnika).getResultList();
+        if(vlasnici.isEmpty())
+            return new Reply(-1, "NE POSTOJI VLASNIK SNIMKA: " + imeVlasnika, null);
+        Korisnik vlasnik = vlasnici.get(0);
+        
+        // da li dati vlasnik ima audio snimak sa tim imenom
+        // Audio.findByIDKorNaziv
+        List<Audio> snimci = empodsistem2.createQuery("SELECT a FROM Audio a WHERE a.naziv = :naziv and a.idKorisnik = :idKorisnik")
+                .setParameter("idKorisnik", vlasnik.getIdKorisnik())
+                .setParameter("naziv", nazivSnimka)
+                .getResultList();
+        if (snimci.isEmpty()) 
+            return new Reply(-1, "ZADATI VLASNIK NEMA AUDIO SNIMAK SA NAZIVOM: " + nazivSnimka, null);
+        Audio a = snimci.get(0);
+        
+        // Ocena.findByIDKorIDAudio
+        List<Ocena> ocene = em.createQuery("SELECT o FROM Ocena o WHERE o.idKorisnik = :idKorisnik and o.idAudio = :idAudio")
+                .setParameter("idKorisnik", curKorisnikId)
+                .setParameter("idAudio", a.getIdAudio())
+                .getResultList();
+        if(ocene.isEmpty())
+            return new Reply(-1, "NE POSTOJI VASA OCENA ZA SNIMAK: " + nazivSnimka, null);
+        Ocena o = ocene.get(0);
+        
+        removeObject(o);
+        return new Reply(0, "USPESNO OBRISANA OCENA SNIMKU: " + nazivSnimka, null);
+    }
+    
     //zahtev 23
     private static Reply dohvatiPakete()
     {
@@ -491,6 +523,17 @@ public class Main {
                         ocena = (int) params.get(3);
                         datum = (String) params.get(4);
                         reply = promeniOcenu(curKorisnikId, nazivSnimka, imeVlasnika, ocena, datum);
+                        objMsgSend.setObject(reply);
+                        System.out.println("Obradjen zahtev...");
+                        break;
+                        
+                    case BRISANJE_OCENE:
+                        System.out.println("Zahtev od servera za brisanje ocene audio snimku...");
+                        params = request.getParametri();
+                        curKorisnikId = (int) params.get(0);
+                        nazivSnimka = (String) params.get(1);
+                        imeVlasnika = (String) params.get(2);
+                        reply = obrisiOcenu(curKorisnikId, nazivSnimka, imeVlasnika);
                         objMsgSend.setObject(reply);
                         System.out.println("Obradjen zahtev...");
                         break;
