@@ -158,9 +158,9 @@ public class Klijent {
                 case DOHVATI_PRETPLATE:
                     Podsistem3Handler.zahtev24Handler(curKorisnikId);
                     break;
-//                case DOHVATI_SLUSANJA_SNIMKA:
-//                    Podsistem3Handler.zahtev25Handler();
-//                    break;
+                case DOHVATI_SLUSANJA_SNIMKA:
+                    Podsistem3Handler.zahtev25Handler();
+                    break;
 //                case DOHVATI_OCENE_SNIMKA:
 //                    Podsistem3Handler.zahtev26Handler();
 //                    break;
