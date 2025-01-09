@@ -226,6 +226,48 @@ public class Podsistem3Handler {
         sendHttpRequest(URL, "POST");
     }
     
+    public static void zahtev15Handler(Integer curKorisnikId) {
+        URL = URL_START;
+        URL = URL + "/zahtev15";
+        URL = URL + "?";
+        count = 0;
+        
+        dodajNaURL("curKorisnikId", curKorisnikId.toString());
+        unesiParametar("naziv audio snimka", "nazivSnimka");
+        unesiParametar("ime korisnika koji je vlasnik snimka", "imeVlasnika");
+        unesiParametar("NOVU ocenu audio snimka (OCENA JE OD 1 DO 5)", "ocena");
+        
+        System.out.println("Unesite datum i vreme pocetka slusanja snimka (format: yyyy-MM-dd HH:mm:ss): ");
+        Scanner in = new Scanner(System.in);
+        String datumString = in.nextLine();
+        
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date datumPostavljanja = null;
+        try
+        {
+            datumPostavljanja = dateFormat.parse(datumString);
+            
+        } catch (ParseException ex)
+        {
+            System.out.println("Datum nije u ispravnom formatu. Pokušajte ponovo.");
+            return;
+        }
+        
+        // date must be encoded
+        String encodedDatumString = datumString;
+        
+        try
+        {
+            encodedDatumString = URLEncoder.encode(datumString, StandardCharsets.UTF_8.toString());
+        } catch (UnsupportedEncodingException ex)
+        {
+            Logger.getLogger(Klijent.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        dodajNaURL("datum", encodedDatumString);
+        
+        sendHttpRequest(URL, "POST");
+    }
+    
     public static void zahtev23Handler() {
         URL = URL_START;
         URL = URL + "/zahtev23";

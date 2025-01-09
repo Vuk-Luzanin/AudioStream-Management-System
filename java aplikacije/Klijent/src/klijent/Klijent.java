@@ -128,9 +128,9 @@ public class Klijent {
                 case KREIRAJ_OCENU:
                     Podsistem3Handler.zahtev14Handler(curKorisnikId);
                     break;
-//                case PROMENA_OCENE:
-//                    Podsistem3Handler.zahtev15Handler();
-//                    break;
+                case PROMENA_OCENE:
+                    Podsistem3Handler.zahtev15Handler(curKorisnikId);
+                    break;
 //                case BRISANJE_OCENE:
 //                    Podsistem3Handler.zahtev16Handler();
 //                    break;
