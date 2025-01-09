@@ -100,7 +100,7 @@ public class Podsistem2Handler {
         unesiParametar("trajanje audio snimka u minutima (primer: 3.4)", "trajanje");
         dodajNaURL("curKorisnikId", curKorisnikId.toString());
         
-        System.out.print("Unesite datum postavljanja videa (format: yyyy-MM-dd HH:mm:ss): ");
+        System.out.println("Unesite datum i vreme postavljanja audio snimka (format: yyyy-MM-dd HH:mm:ss): ");
         Scanner in = new Scanner(System.in);
         String datumString = in.nextLine();
         

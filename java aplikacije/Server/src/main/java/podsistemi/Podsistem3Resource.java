@@ -120,13 +120,30 @@ public class Podsistem3Resource {
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)       // jer radi sa JMS koji nema transakcije (mozda radi i bez?!)
     @POST
     @Path("/zahtev11")
-    public Response kreirajGrad(@QueryParam("nazivPaketa") String nazivPaketa, @QueryParam("datum") String datum,
+    public Response kreirajPretplatu(@QueryParam("nazivPaketa") String nazivPaketa, @QueryParam("datum") String datum,
             @QueryParam("curKorisnikId") int curKorisnikId) {
         Request request = new Request();
         request.setIdZahteva(KREIRAJ_PRETPLATU);
         request.dodajParametar(nazivPaketa);
         request.dodajParametar(datum);
         request.dodajParametar(curKorisnikId);
+        return sendRequest(request);
+    }
+    
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)       // jer radi sa JMS koji nema transakcije (mozda radi i bez?!)
+    @POST
+    @Path("/zahtev12")
+    public Response kreirajSlusanje(@QueryParam("curKorisnikId") int curKorisnikId, @QueryParam("nazivSnimka") String nazivSnimka,
+            @QueryParam("imeVlasnika") String imeVlasnika, @QueryParam("datumPocetka") String datumPocetka,
+            @QueryParam("sekundPocetka") int sekundPocetka, @QueryParam("sekundOdslusano") int sekundOdslusano) {
+        Request request = new Request();
+        request.setIdZahteva(KREIRAJ_SLUSANJE);
+        request.dodajParametar(curKorisnikId);
+        request.dodajParametar(nazivSnimka);
+        request.dodajParametar(imeVlasnika);
+        request.dodajParametar(datumPocetka);
+        request.dodajParametar(sekundPocetka);
+        request.dodajParametar(sekundOdslusano);
         return sendRequest(request);
     }
     

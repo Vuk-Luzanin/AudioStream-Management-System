@@ -3,12 +3,12 @@ package podsistem3;
 
 import entities.Paket;
 import entities.Pretplata;
+import entities.Slusanje;
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.net.URLDecoder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -29,6 +29,7 @@ import javax.persistence.Persistence;
 import komunikacija.Reply;
 import komunikacija.Request;
 import podsistem1Entities.Korisnik;
+import podsistem2Entities.Audio;
 
 
 public class Main {
@@ -168,6 +169,54 @@ public class Main {
         return new Reply(0, "USPESNO KREIRANA PRETPLATA: " + nazivPaketa, null);
     }
     
+    //zahtev 12
+    // curKorisnikId - TRENUTNO ULOGOVAN KORISNIK -> sigurno postoji u sistemu
+    private static Reply kreirajSlusanje(int curKorisnikId, String nazivSnimka, String imeVlasnika,
+                                        String datumPocetka, int sekundPocetka, int sekundOdslusano)
+    { 
+       List<Korisnik> vlasnici = empodsistem1.createNamedQuery("Korisnik.findByIme").setParameter("ime", imeVlasnika).getResultList();
+        if(vlasnici.isEmpty())
+            return new Reply(-1, "NE POSTOJI VLASNIK SNIMKA: " + imeVlasnika, null);
+        Korisnik vlasnik = vlasnici.get(0);
+        
+        // da li dati vlasnik ima audio snimak sa tim imenom
+        // Audio.findByIDKorNaziv
+        List<Audio> snimci = empodsistem2.createQuery("SELECT a FROM Audio a WHERE a.naziv = :naziv and a.idKorisnik = :idKorisnik")
+                .setParameter("idKorisnik", vlasnik.getIdKorisnik())
+                .setParameter("naziv", nazivSnimka)
+                .getResultList();
+        if (snimci.isEmpty()) 
+            return new Reply(-1, "ZADATI VLASNIK NEMA AUDIO SNIMAK SA NAZIVOM: " + nazivSnimka, null);
+        Audio a = snimci.get(0);
+        
+        if (sekundPocetka < 0 || sekundOdslusano < 0) 
+            return new Reply(-1, "BROJ SEKUDNI NE MOZE BITI NEGATIVAN", null);
+        
+        // Dekodiraj datum
+        String decodedDatum = null;
+        try {
+            decodedDatum = URLDecoder.decode(datumPocetka, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date datumPostavljanja = null;
+        try 
+        {
+            datumPostavljanja = dateFormat.parse(decodedDatum);
+        } catch (ParseException e) 
+        {
+            System.out.println("DATUM NIJE U ISPRAVNOM FORMATU: " + datumPocetka);
+        }
+        
+        Slusanje s = new Slusanje();
+        s.setIdKorisnik(curKorisnikId); s.setIdAudio(a.getIdAudio());
+        s.setDatumPocetka(datumPostavljanja); s.setSekundPocetka(sekundPocetka); s.setSekundOdslusano(sekundOdslusano);
+        persistObject(s);
+        return new Reply(0, "USPESNO KREIRANO SLUSANJE", null);
+    }
+    
     //zahtev 23
     private static Reply dohvatiPakete()
     {
@@ -246,6 +295,20 @@ public class Main {
                         String datum = (String) request.getParametri().get(1);
                         int curKorisnikId = (int) request.getParametri().get(2);
                         reply = kreirajPretplatu(nazivPaketa, datum, curKorisnikId);
+                        objMsgSend.setObject(reply);
+                        System.out.println("Obradjen zahtev...");
+                        break;
+                        
+                    case KREIRAJ_SLUSANJE:
+                        System.out.println("Zahtev od servera za kreiranje slusanja...");
+                        ArrayList<Object> params = request.getParametri();
+                        curKorisnikId = (int) params.get(0);
+                        String nazivSnimka = (String) params.get(1);
+                        String imeVlasnika = (String) params.get(2);
+                        String datumPocetka = (String) params.get(3);
+                        int sekundPocetka = (int) params.get(4);
+                        int sekundOdslusano = (int) params.get(5);
+                        reply = kreirajSlusanje(curKorisnikId, nazivSnimka, imeVlasnika, datumPocetka, sekundPocetka, sekundOdslusano);
                         objMsgSend.setObject(reply);
                         System.out.println("Obradjen zahtev...");
                         break;
