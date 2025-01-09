@@ -2,6 +2,7 @@
 package podsistem3;
 
 import entities.Ocena;
+import entities.OmiljeniSnimci;
 import entities.Paket;
 import entities.Pretplata;
 import entities.Slusanje;
@@ -216,6 +217,30 @@ public class Main {
         s.setDatumPocetka(datumPostavljanja); s.setSekundPocetka(sekundPocetka); s.setSekundOdslusano(sekundOdslusano);
         persistObject(s);
         return new Reply(0, "USPESNO KREIRANO SLUSANJE", null);
+    }
+    
+    //zahtev 13
+    // curKorisnikId - TRENUTNO ULOGOVAN KORISNIK -> sigurno postoji u sistemu
+    private static Reply dodajOmiljene(int curKorisnikId, String nazivSnimka, String imeVlasnika)
+    { 
+       List<Korisnik> vlasnici = empodsistem1.createNamedQuery("Korisnik.findByIme").setParameter("ime", imeVlasnika).getResultList();
+        if(vlasnici.isEmpty())
+            return new Reply(-1, "NE POSTOJI VLASNIK SNIMKA: " + imeVlasnika, null);
+        Korisnik vlasnik = vlasnici.get(0);
+        
+        // da li dati vlasnik ima audio snimak sa tim imenom
+        // Audio.findByIDKorNaziv
+        List<Audio> snimci = empodsistem2.createQuery("SELECT a FROM Audio a WHERE a.naziv = :naziv and a.idKorisnik = :idKorisnik")
+                .setParameter("idKorisnik", vlasnik.getIdKorisnik())
+                .setParameter("naziv", nazivSnimka)
+                .getResultList();
+        if (snimci.isEmpty()) 
+            return new Reply(-1, "ZADATI VLASNIK NEMA AUDIO SNIMAK SA NAZIVOM: " + nazivSnimka, null);
+        Audio a = snimci.get(0);
+        
+        OmiljeniSnimci om = new OmiljeniSnimci(curKorisnikId, a.getIdAudio());
+        persistObject(om);
+        return new Reply(0, "USPESNO SNIMAK DODAT U LISTU OMILJENIH", null);
     }
     
     //zahtev 14
@@ -497,6 +522,17 @@ public class Main {
                         int sekundPocetka = (int) params.get(4);
                         int sekundOdslusano = (int) params.get(5);
                         reply = kreirajSlusanje(curKorisnikId, nazivSnimka, imeVlasnika, datumPocetka, sekundPocetka, sekundOdslusano);
+                        objMsgSend.setObject(reply);
+                        System.out.println("Obradjen zahtev...");
+                        break;
+                        
+                    case DODAJ_OMILJENI_SNIMAK:
+                        System.out.println("Zahtev od servera za dodavanje audio snimka u listu omiljenih...");
+                        params = request.getParametri();
+                        curKorisnikId = (int) params.get(0);
+                        nazivSnimka = (String) params.get(1);
+                        imeVlasnika = (String) params.get(2);
+                        reply = dodajOmiljene(curKorisnikId, nazivSnimka, imeVlasnika);
                         objMsgSend.setObject(reply);
                         System.out.println("Obradjen zahtev...");
                         break;

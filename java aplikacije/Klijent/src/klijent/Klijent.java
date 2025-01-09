@@ -122,9 +122,9 @@ public class Klijent {
                 case KREIRAJ_SLUSANJE:
                     Podsistem3Handler.zahtev12Handler(curKorisnikId);
                     break;
-//                case DODAJ_OMILJENI_SNIMAK:
-//                    Podsistem3Handler.zahtev13Handler();
-//                    break;
+                case DODAJ_OMILJENI_SNIMAK:
+                    Podsistem3Handler.zahtev13Handler(curKorisnikId);
+                    break;
                 case KREIRAJ_OCENU:
                     Podsistem3Handler.zahtev14Handler(curKorisnikId);
                     break;

@@ -184,6 +184,18 @@ public class Podsistem3Handler {
         sendHttpRequest(URL, "POST");
     }
     
+    public static void zahtev13Handler(Integer curKorisnikId) {
+        URL = URL_START;
+        URL = URL + "/zahtev13";
+        URL = URL + "?";
+        count = 0;
+        
+        dodajNaURL("curKorisnikId", curKorisnikId.toString());
+        unesiParametar("naziv audio snimka", "nazivSnimka");
+        unesiParametar("ime korisnika koji je vlasnik snimka", "imeVlasnika");
+        sendHttpRequest(URL, "POST");
+    }
+    
     public static void zahtev14Handler(Integer curKorisnikId) {
         URL = URL_START;
         URL = URL + "/zahtev14";

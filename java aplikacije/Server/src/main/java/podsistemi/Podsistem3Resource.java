@@ -149,6 +149,19 @@ public class Podsistem3Resource {
     
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)       // jer radi sa JMS koji nema transakcije (mozda radi i bez?!)
     @POST
+    @Path("/zahtev13")
+    public Response dodajOmiljene(@QueryParam("curKorisnikId") int curKorisnikId, @QueryParam("nazivSnimka") String nazivSnimka,
+            @QueryParam("imeVlasnika") String imeVlasnika) {
+        Request request = new Request();
+        request.setIdZahteva(DODAJ_OMILJENI_SNIMAK);
+        request.dodajParametar(curKorisnikId);
+        request.dodajParametar(nazivSnimka);
+        request.dodajParametar(imeVlasnika);
+        return sendRequest(request);
+    }
+    
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)       // jer radi sa JMS koji nema transakcije (mozda radi i bez?!)
+    @POST
     @Path("/zahtev14")
     public Response kreirajOcenu(@QueryParam("curKorisnikId") int curKorisnikId, @QueryParam("nazivSnimka") String nazivSnimka,
                                 @QueryParam("imeVlasnika") String imeVlasnika, @QueryParam("ocena") int ocena, 
