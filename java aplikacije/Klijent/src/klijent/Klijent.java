@@ -164,9 +164,9 @@ public class Klijent {
                 case DOHVATI_OCENE_SNIMKA:
                     Podsistem3Handler.zahtev26Handler();
                     break;
-//                case DOHVATI_OMILJENE_SNIMKE:
-//                    Podsistem3Handler.zahtev27Handler();
-//                    break;
+                case DOHVATI_OMILJENE_SNIMKE:
+                    Podsistem3Handler.zahtev27Handler(curKorisnikId);
+                    break;
                   case LOGOUT:
                     System.out.println("Logging out...");
                     curKorisnikId = -1;

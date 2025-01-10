@@ -3,6 +3,7 @@ package podsistem2;
 
 import entities.Audio;
 import entities.Kategorija;
+import entities.Korisnik;
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.net.URLDecoder;
@@ -22,11 +23,9 @@ import javax.jms.ObjectMessage;
 import javax.jms.Topic;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.NamedQuery;
 import javax.persistence.Persistence;
 import komunikacija.Reply;
 import komunikacija.Request;
-import podsistem1Entities.Korisnik;
 
 
 public class Main {

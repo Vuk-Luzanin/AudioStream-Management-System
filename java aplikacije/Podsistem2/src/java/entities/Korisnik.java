@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package podsistem1Entities;
+package entities;
 
 import java.io.Serializable;
 import javax.persistence.Basic;
@@ -165,7 +165,7 @@ public class Korisnik implements Serializable {
 
     @Override
     public String toString() {
-        return "podsistem1Entities.Korisnik[ idKorisnik=" + idKorisnik + " ]";
+        return "entities.Korisnik[ idKorisnik=" + idKorisnik + " ]";
     }
     
 }

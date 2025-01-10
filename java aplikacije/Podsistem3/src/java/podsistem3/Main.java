@@ -1,11 +1,7 @@
 
 package podsistem3;
 
-import entities.Ocena;
-import entities.OmiljeniSnimci;
-import entities.Paket;
-import entities.Pretplata;
-import entities.Slusanje;
+import entities.*;
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.net.URLDecoder;
@@ -30,8 +26,6 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import komunikacija.Reply;
 import komunikacija.Request;
-import podsistem1Entities.Korisnik;
-import podsistem2Entities.Audio;
 
 
 public class Main {
@@ -459,6 +453,31 @@ public class Main {
         return new Reply(0, "DOHVACENE SVE OCENE ZA SNIMAK: " + nazivSnimka + ", VLASNIKA: " + imeVlasnika, ocene);
     }
     
+    //zahtev 27
+    private static Reply dohvatiOmiljene(int curKorisnikId)
+    {
+        List<Integer> omiljeniAudioIds = em
+        .createQuery("SELECT o.omiljeniSnimciPK.idAudio FROM OmiljeniSnimci o WHERE o.omiljeniSnimciPK.idKorisnik = :idKorisnik", Integer.class)
+        .setParameter("idKorisnik", curKorisnikId) 
+        .getResultList();
+        
+        
+        List<Audio> omiljeniAudio = empodsistem2
+        .createQuery("SELECT a FROM Audio a WHERE a.idAudio IN :idAudioList", Audio.class)
+        .setParameter("idAudioList", omiljeniAudioIds)
+        .getResultList();
+
+        for(Audio a : omiljeniAudio)
+        {
+            for(Kategorija k : a.getKategorijaList())
+            {
+                k.setAudioList(null);
+            }
+        }
+        System.out.println(omiljeniAudio);
+        return new Reply(0, "DOHVACENA LISTA OMILJENIH AUDIO SNIMAKA", omiljeniAudio);  
+    }
+    
     
     public static void main(String[] args) {
         System.out.println("Podsistem3 pokrenut...");
@@ -603,6 +622,14 @@ public class Main {
                         nazivSnimka = (String) request.getParametri().get(0);
                         imeVlasnika = (String) request.getParametri().get(1);
                         reply = dohvatiOceneZaSnimak(nazivSnimka, imeVlasnika);
+                        objMsgSend.setObject(reply);
+                        System.out.println("Obradjen zahtev...");
+                        break;
+                        
+                    case DOHVATI_OMILJENE_SNIMKE:
+                        System.out.println("Zahtev od servera za dohvatanje liste omiljenih audio snimaka...");
+                        curKorisnikId = (int) request.getParametri().get(0);
+                        reply = dohvatiOmiljene(curKorisnikId);
                         objMsgSend.setObject(reply);
                         System.out.println("Obradjen zahtev...");
                         break;

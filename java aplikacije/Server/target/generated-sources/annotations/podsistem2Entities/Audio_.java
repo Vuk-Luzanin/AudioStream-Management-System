@@ -1,14 +1,14 @@
-package entities;
+package podsistem2Entities;
 
-import entities.Kategorija;
 import java.math.BigDecimal;
 import java.util.Date;
 import javax.annotation.Generated;
 import javax.persistence.metamodel.ListAttribute;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
+import podsistem2Entities.Kategorija;
 
-@Generated(value="EclipseLink-2.7.12.v20230209-rNA", date="2025-01-10T18:31:37")
+@Generated(value="EclipseLink-2.7.12.v20230209-rNA", date="2025-01-10T18:18:22")
 @StaticMetamodel(Audio.class)
 public class Audio_ { 
 

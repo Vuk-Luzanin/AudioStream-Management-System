@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package podsistem1Entities;
+package entities;
 
 import java.io.Serializable;
 import java.util.List;
@@ -107,7 +107,7 @@ public class Mesto implements Serializable {
 
     @Override
     public String toString() {
-        return "podsistem1Entities.Mesto[ idMesto=" + idMesto + " ]";
+        return "entities.Mesto[ idMesto=" + idMesto + " ]";
     }
     
 }

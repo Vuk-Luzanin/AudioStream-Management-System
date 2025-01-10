@@ -16,8 +16,8 @@
   </persistence-unit>
   <persistence-unit name="Podsistem1PU" transaction-type="RESOURCE_LOCAL">
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
-    <class>podsistem1Entities.Korisnik</class>
-    <class>podsistem1Entities.Mesto</class>
+    <class>entities.Korisnik</class>
+    <class>entities.Mesto</class>
     <exclude-unlisted-classes>true</exclude-unlisted-classes>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/podsistem1?zeroDateTimeBehavior=CONVERT_TO_NULL"/>

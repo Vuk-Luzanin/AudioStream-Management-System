@@ -67,7 +67,7 @@ public class Audio implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date datumPostavljanja;
     @JoinTable(name = "audioKategorija", joinColumns = {
-        @JoinColumn(name = "idKategorija", referencedColumnName = "idAudio")}, inverseJoinColumns = {
+        @JoinColumn(name = "idAudio", referencedColumnName = "idAudio")}, inverseJoinColumns = {
         @JoinColumn(name = "idKategorija", referencedColumnName = "idKategorija")})
     @ManyToMany
     private List<Kategorija> kategorijaList;

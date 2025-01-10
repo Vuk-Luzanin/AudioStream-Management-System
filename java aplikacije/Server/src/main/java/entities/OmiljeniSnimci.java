@@ -29,6 +29,7 @@ public class OmiljeniSnimci implements Serializable {
     @EmbeddedId
     protected OmiljeniSnimciPK omiljeniSnimciPK;
 
+
     public OmiljeniSnimci() {
     }
 

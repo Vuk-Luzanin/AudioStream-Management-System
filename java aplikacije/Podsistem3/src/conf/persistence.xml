@@ -19,8 +19,8 @@
   </persistence-unit>
   <persistence-unit name="Podsistem1PU" transaction-type="RESOURCE_LOCAL">
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
-    <class>podsistem1Entities.Korisnik</class>
-    <class>podsistem1Entities.Mesto</class>
+    <class>entities.Korisnik</class>
+    <class>entities.Mesto</class>
     <exclude-unlisted-classes>true</exclude-unlisted-classes>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/podsistem1?zeroDateTimeBehavior=CONVERT_TO_NULL"/>
@@ -33,8 +33,8 @@
   </persistence-unit>
   <persistence-unit name="Podsistem2PU" transaction-type="RESOURCE_LOCAL">
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
-    <class>podsistem2Entities.Audio</class>
-    <class>podsistem2Entities.Kategorija</class>
+    <class>entities.Audio</class>
+    <class>entities.Kategorija</class>
     <exclude-unlisted-classes>true</exclude-unlisted-classes>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/podsistem2?zeroDateTimeBehavior=CONVERT_TO_NULL"/>

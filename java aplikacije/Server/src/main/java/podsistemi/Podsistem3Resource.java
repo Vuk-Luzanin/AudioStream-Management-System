@@ -245,4 +245,14 @@ public class Podsistem3Resource {
         request.dodajParametar(imeVlasnika);
         return sendRequest(request);
     }
+    
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)       // jer radi sa JMS koji nema transakcije
+    @GET
+    @Path("/zahtev27")
+    public Response dohvatiOmiljene(@QueryParam("curKorisnikId") int curKorisnikId) {
+        Request request = new Request();
+        request.setIdZahteva(DOHVATI_OMILJENE_SNIMKE);
+        request.dodajParametar(curKorisnikId);
+        return sendRequest(request);
+    }
 }

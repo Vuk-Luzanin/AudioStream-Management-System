@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package podsistem2Entities;
+package entities;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -40,7 +40,6 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Audio.findByNaziv", query = "SELECT a FROM Audio a WHERE a.naziv = :naziv"),
     @NamedQuery(name = "Audio.findByTrajanje", query = "SELECT a FROM Audio a WHERE a.trajanje = :trajanje"),
     @NamedQuery(name = "Audio.findByIdKorisnik", query = "SELECT a FROM Audio a WHERE a.idKorisnik = :idKorisnik"),
-    @NamedQuery(name = "Audio.findByIDKorNaziv", query = "SELECT a FROM Audio a WHERE a.naziv = :naziv and a.idKorisnik = :idKorisnik"), // ADDED
     @NamedQuery(name = "Audio.findByDatumPostavljanja", query = "SELECT a FROM Audio a WHERE a.datumPostavljanja = :datumPostavljanja")})
 public class Audio implements Serializable {
 
@@ -158,7 +157,7 @@ public class Audio implements Serializable {
 
     @Override
     public String toString() {
-        return "podsistem2Entities.Audio[ idAudio=" + idAudio + " ]";
+        return "entities.Audio[ idAudio=" + idAudio + " ]";
     }
     
 }

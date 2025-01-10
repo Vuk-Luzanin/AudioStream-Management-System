@@ -331,4 +331,14 @@ public class Podsistem3Handler {
         unesiParametar("ime korisnika koji je vlasnik snimka", "imeVlasnika");
         sendHttpRequest(URL, "GET");
     }
+    
+    public static void zahtev27Handler(Integer curKorisnikId) {
+        URL = URL_START;
+        URL = URL + "/zahtev27";
+        URL = URL + "?";
+        count = 0;
+        
+        dodajNaURL("curKorisnikId", curKorisnikId.toString());
+        sendHttpRequest(URL, "GET");
+    }
 }

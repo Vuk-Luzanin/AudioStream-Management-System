@@ -1,12 +1,12 @@
-package entities;
+package podsistem2Entities;
 
-import entities.Audio;
 import javax.annotation.Generated;
 import javax.persistence.metamodel.ListAttribute;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
+import podsistem2Entities.Audio;
 
-@Generated(value="EclipseLink-2.7.12.v20230209-rNA", date="2025-01-10T18:31:37")
+@Generated(value="EclipseLink-2.7.12.v20230209-rNA", date="2025-01-10T18:18:22")
 @StaticMetamodel(Kategorija.class)
 public class Kategorija_ { 
 
