@@ -10,6 +10,11 @@ import java.net.URLEncoder;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
+import java.util.ArrayList;
 
 
 public class Podsistem1Handler {
@@ -41,8 +46,29 @@ public class Podsistem1Handler {
                 
                 String response = content.toString();
                 
-                // odgovor sa servera
-                System.out.println(response);
+                // REPLY FROM SERVER
+//                System.out.println(response);
+                // PARSE RESPONSE
+                try {
+                    // check if response is curKorisnikId
+                    int r = Integer.parseInt(response);
+                    System.out.println("Response is a number: " + r);
+                    
+                } catch (NumberFormatException e) {
+                    
+                    Gson gson = new Gson();
+                    JsonArray jsonArray = JsonParser.parseString(response).getAsJsonArray();
+                    ArrayList<String> elements = new ArrayList<>();
+
+                    for (JsonElement jsonElement : jsonArray) {
+                        elements.add(gson.toJson(jsonElement));
+                    }
+
+                    for (String elem : elements) {
+                        System.out.println(elem.replace("\"", ""));
+                    }
+                }
+                            
                 return response;
             } else {
                 System.out.println("Failed to get response, status code: " + status + "\n");

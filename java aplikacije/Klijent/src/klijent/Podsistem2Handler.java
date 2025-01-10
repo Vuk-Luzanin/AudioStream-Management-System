@@ -1,6 +1,10 @@
 
 package klijent;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
@@ -10,6 +14,7 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Scanner;
 import java.util.logging.Level;
@@ -44,9 +49,30 @@ public class Podsistem2Handler {
                 in.close();
                 
                 String response = content.toString();
+
+                // REPLY FROM SERVER
+//                System.out.println(response);
+                // PARSE RESPONSE
+                try {
+                    // check if response is curKorisnikId
+                    int r = Integer.parseInt(response);
+                    System.out.println("Response is a number: " + r);
+                    
+                } catch (NumberFormatException e) {
+                    
+                    Gson gson = new Gson();
+                    JsonArray jsonArray = JsonParser.parseString(response).getAsJsonArray();
+                    ArrayList<String> elements = new ArrayList<>();
+
+                    for (JsonElement jsonElement : jsonArray) {
+                        elements.add(gson.toJson(jsonElement));
+                    }
+
+                    for (String elem : elements) {
+                        System.out.println(elem.replace("\"", ""));
+                    }
+                }
                 
-                // odgovor sa servera
-                System.out.println(response);
                 return response;
             } else {
                 System.out.println("Failed to get response, status code: " + status + "\n");

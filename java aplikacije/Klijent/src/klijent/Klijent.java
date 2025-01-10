@@ -63,7 +63,7 @@ public class Klijent {
     private static final int DOHVATI_OCENE_SNIMKA = 26;
     private static final int DOHVATI_OMILJENE_SNIMKE = 27;
     private static final int LOGOUT = 100;
-   private static int curKorisnikId = -1;
+    private static int curKorisnikId = -1;
 
     public static void main(String[] args) {
         System.out.println("Klijent pokrenut...");
@@ -177,10 +177,6 @@ public class Klijent {
                     break;
             }
             System.out.println("------------------------------------------------------------------------");
-
         }
-        
     }
-
-    
 }
