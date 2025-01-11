@@ -48,27 +48,38 @@ public class Podsistem1Handler {
                 
                 // REPLY FROM SERVER
 //                System.out.println(response);
+
                 // PARSE RESPONSE
                 try {
-                    // check if response is curKorisnikId
+                    // Check if response is a number
                     int r = Integer.parseInt(response);
                     System.out.println("Response is a number: " + r);
-                    
                 } catch (NumberFormatException e) {
-                    
-                    Gson gson = new Gson();
-                    JsonArray jsonArray = JsonParser.parseString(response).getAsJsonArray();
-                    ArrayList<String> elements = new ArrayList<>();
+                    try {
+                        // Try parsing the response as JSON
+                        JsonElement jsonElement = JsonParser.parseString(response);
 
-                    for (JsonElement jsonElement : jsonArray) {
-                        elements.add(gson.toJson(jsonElement));
-                    }
+                        // Check if is a JSON array
+                        if (jsonElement.isJsonArray()) {
+                            Gson gson = new Gson();
+                            JsonArray jsonArray = jsonElement.getAsJsonArray();
+                            ArrayList<String> elements = new ArrayList<>();
 
-                    for (String elem : elements) {
-                        System.out.println(elem.replace("\"", ""));
+                            for (JsonElement element : jsonArray) {
+                                elements.add(gson.toJson(element));
+                            }
+
+                            for (String elem : elements) {
+                                System.out.println(elem.replace("\"", ""));
+                            }
+                        } else {
+                            System.out.println(response);
+                        }
+                    } catch (Exception jsonException) {
+                        System.out.println(response);
                     }
-                }
-                            
+                }       
+                
                 return response;
             } else {
                 System.out.println("Failed to get response, status code: " + status + "\n");

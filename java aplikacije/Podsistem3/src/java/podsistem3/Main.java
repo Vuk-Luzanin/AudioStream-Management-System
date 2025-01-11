@@ -232,6 +232,14 @@ public class Main {
             return new Reply(-1, "ZADATI VLASNIK NEMA AUDIO SNIMAK SA NAZIVOM: " + nazivSnimka, null);
         Audio a = snimci.get(0);
         
+        // da li je vec dodao taj snimak u listu omiljenih
+        List<OmiljeniSnimci> omiljeni = em.createQuery("SELECT o FROM OmiljeniSnimci o WHERE o.omiljeniSnimciPK.idKorisnik = :idKorisnik AND o.omiljeniSnimciPK.idAudio = :idAudio")
+                .setParameter("idKorisnik", curKorisnikId)
+                .setParameter("idAudio", a.getIdAudio())
+                .getResultList();
+        if (!omiljeni.isEmpty()) 
+            return new Reply(-1, "KORISNIK JE VEC DODAO U OMILJENE AUDIO SNIMAK SA NAZIVOM: " + nazivSnimka, null);
+        
         OmiljeniSnimci om = new OmiljeniSnimci(curKorisnikId, a.getIdAudio());
         persistObject(om);
         return new Reply(0, "USPESNO SNIMAK DODAT U LISTU OMILJENIH", null);

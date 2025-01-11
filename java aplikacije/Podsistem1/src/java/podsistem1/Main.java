@@ -146,7 +146,7 @@ public class Main {
     {
         List<Korisnik> korisnici = em.createNamedQuery("Korisnik.findByIme").setParameter("ime", imeKorisnika).getResultList();
         if(korisnici.isEmpty())
-            return new Reply(-1, "NE POSTOJI KORISNIK: " + imeKorisnika, null);
+            return new Reply(-1, "-1", null);
         Korisnik k = korisnici.get(0);
         
         if(!k.getSifra().equals(sifra))
