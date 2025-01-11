@@ -9,6 +9,7 @@ import java.math.BigDecimal;
 import java.net.URLDecoder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
@@ -194,6 +195,12 @@ public class Main {
         }
 
         em.getTransaction().begin();
+        if (k.getAudioList() == null) {
+            k.setAudioList(new ArrayList<>());
+        }
+        if (a.getKategorijaList() == null) {
+            a.setKategorijaList(new ArrayList<>());
+        }
         a.getKategorijaList().add(k);
         k.getAudioList().add(a);
         em.flush();
