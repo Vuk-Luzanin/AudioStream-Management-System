@@ -144,8 +144,8 @@ public class Podsistem3Handler {
         URL = URL + "/zahtev11";
         URL = URL + "?";
         count = 0;
-        
         unesiParametar("naziv paketa", "nazivPaketa");
+        
         System.out.println("Unesite datum i vreme postavljanja audio snimka (format: yyyy-MM-dd HH:mm:ss): ");
         Scanner in = new Scanner(System.in);
         String datumString = in.nextLine();
