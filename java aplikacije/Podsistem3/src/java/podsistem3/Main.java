@@ -205,6 +205,10 @@ public class Main {
         {
             System.out.println("DATUM NIJE U ISPRAVNOM FORMATU: " + datumPocetka);
         }
+        if (datumPostavljanja.before(a.getDatumPostavljanja()))
+        {
+            return new Reply(-1, "SLUSANJE MORA BITI NAKON POSTAVLJANJA SNIMKA", null);
+        }
         
         Slusanje s = new Slusanje();
         s.setIdKorisnik(curKorisnikId); s.setIdAudio(a.getIdAudio());
@@ -285,6 +289,18 @@ public class Main {
             System.out.println("DATUM NIJE U ISPRAVNOM FORMATU: " + datum);
         }
         
+        if (datumPostavljanja.before(a.getDatumPostavljanja()))
+        {
+            return new Reply(-1, "SNIMAK SE MOZE OCENITI NAKON POSTAVLJANJA", null);
+        }
+        
+        List<Ocena> ocene = em.createQuery("SELECT O FROM Ocena o WHERE o.idKorisnik = :idKorisnik and o.idAudio = :idAudio")
+                .setParameter("idKorisnik", curKorisnikId)
+                .setParameter("idAudio", a.getIdAudio())
+                .getResultList();
+        if (!ocene.isEmpty())
+            return new Reply(-1, "VEC STE OCENILI DATI SNIMAK", null);
+        
         Ocena o = new Ocena();
         o.setIdKorisnik(curKorisnikId); o.setIdAudio(a.getIdAudio());
         o.setOcena(ocena); o.setDatum(datumPostavljanja);
@@ -336,6 +352,11 @@ public class Main {
         } catch (ParseException e) 
         {
             System.out.println("DATUM NIJE U ISPRAVNOM FORMATU: " + datum);
+        }
+        
+        if (datumPostavljanja.before(a.getDatumPostavljanja()))
+        {
+            return new Reply(-1, "SNIMAK SE MOZE OCENITI NAKON POSTAVLJANJA", null);
         }
         
         em.getTransaction().begin();
@@ -469,6 +490,10 @@ public class Main {
         .setParameter("idKorisnik", curKorisnikId) 
         .getResultList();
         
+        if (omiljeniAudioIds.isEmpty())
+        {
+            return new Reply(-1, "NEMA OMILJENIH SNIMAKA", null);
+        }
         
         List<Audio> omiljeniAudio = empodsistem2
         .createQuery("SELECT a FROM Audio a WHERE a.idAudio IN :idAudioList", Audio.class)
