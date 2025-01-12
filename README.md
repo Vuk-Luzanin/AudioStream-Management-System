@@ -78,6 +78,7 @@ The system uses **MySQL** as the database backend, with the following key featur
 3. **Start project** 
   - Set Java JDK 1.8 for every project
   - Run all applications
+  - Application server will be available on http://localhost:8080/
 
 ---
 
