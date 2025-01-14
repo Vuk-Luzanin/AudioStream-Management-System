@@ -85,5 +85,5 @@ The system uses **MySQL** as the database backend, with the following key featur
 ## 📜 UML Diagrams
 
 The following UML diagrams are included in the `uml/` folder:
-1. **Class Diagrams**: Illustrating the structure of each application.
+1. **Class Diagrams**: Illustrating the structure of each application and entity classes.
 2. **Sequence Diagram**: Depicting the workflow for subscription creation.
