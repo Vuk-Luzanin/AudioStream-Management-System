@@ -70,7 +70,7 @@ The system uses **MySQL** as the database backend, with the following key featur
   - create JDBC Resources: `podsistem1Resource`/`podsistem1Resource`/`podsistem1Resource` for the corresponding pool
   - create JMS Connection Factory: `projectConnFactory`
   - create JMS Destination Resources: `projectTopicServer`
-  - Add `mysql-connector-j-9.1.0.jar` (given in biblioteke folder) in GlassFish server installation folder
+  - Add `mysql-connector-j-9.1.0.jar` (given in biblioteke folder) in GlassFish server installation folder and in project Libraries
 
 2. **Set up Netbeans IDE**
   - in Services -> Databases -> add Driver -> add `mysql-connector-j-9.1.0.jar` file
