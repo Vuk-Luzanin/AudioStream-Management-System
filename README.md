@@ -1,7 +1,6 @@
 # Audio Management System
 
 This project is part of the coursework for **Information Systems 1** at the **School of Electrical Engineering, University of Belgrade**.  
-
 The system manages audio recordings, users, subscriptions, and related functionalities using a **client-server architecture** with **RESTful APIs**, **JMS (Java Message Service)**, and **JPA (Java Persistence API)** for database interactions.  
 
 ---
