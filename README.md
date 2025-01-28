@@ -27,7 +27,6 @@ The project consists of the following components:
 ---
 
 ## ⚙️ Technologies Used
-
 - **Java SE** for the client application.
 - **JMS** (Java Message Service) for inter-subsystem communication.
 - **JPA** (Java Persistence API) with **MySQL** for database operations.
