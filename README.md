@@ -6,7 +6,6 @@ The system manages audio recordings, users, subscriptions, and related functiona
 ---
 
 ## 📂 Project Structure
-
 The project consists of the following components:
 
 ### 1. **Client Application**
